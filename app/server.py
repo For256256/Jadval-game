@@ -184,6 +184,11 @@ def api_cities():
     return jsonify(data.CITIES)
 
 
+@app.route("/api/pricing")
+def api_pricing():
+    return jsonify(services.get_commission_settings())
+
+
 @app.route("/api/price-history")
 def api_price_history():
     material = request.args.get("material", "rebar")

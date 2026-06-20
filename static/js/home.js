@@ -47,6 +47,39 @@
     });
   }
 
+  let lastPricing = null;
+
+  function renderPricing(settings) {
+    lastPricing = settings;
+    const tiers = [
+      { key: "tier1", price: settings.tier1_monthly, featured: false },
+      { key: "tier2", price: settings.tier2_monthly, featured: true },
+      { key: "tier3", price: settings.tier3_monthly, featured: false },
+    ];
+    document.getElementById("pricingGrid").innerHTML = tiers
+      .map(
+        (tier) => `
+        <div class="pricing-card spot-card${tier.featured ? " featured" : ""}" data-reveal>
+          ${tier.featured ? `<span class="badge badge-primary">${window.I18N.t("home.pricing_tier2_badge")}</span>` : ""}
+          <h3>${window.I18N.t(`home.pricing_${tier.key}_name`)}</h3>
+          <p class="pricing-desc">${window.I18N.t(`home.pricing_${tier.key}_desc`)}</p>
+          <div class="pricing-price">
+            <b>${fmtNum(tier.price)}</b>
+            <span>${window.I18N.t("home.pricing_per_month")}</span>
+          </div>
+        </div>`
+      )
+      .join("");
+    document.getElementById("pricingFeeNote").innerHTML =
+      `${window.I18N.t("home.pricing_fee_note")} <b>${settings.fee_percent}٪</b> ${window.I18N.t("home.pricing_fee_note_suffix")}`;
+    if (window.Motion) window.Motion.refresh(document.getElementById("pricingGrid"));
+  }
+
+  async function loadPricing() {
+    const settings = await fetchJSON("/api/pricing");
+    renderPricing(settings);
+  }
+
   function wirePriceTabs() {
     document.querySelectorAll(".price-tab").forEach((tab) => {
       tab.addEventListener("click", () => {
@@ -124,6 +157,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     wirePriceTabs();
     loadPriceChart("rebar");
+    loadPricing();
     document.getElementById("analyzeBtn").addEventListener("click", analyzeRequest);
     document.getElementById("submitRfqBtn").addEventListener("click", submitRfq);
     document.getElementById("rfqText").addEventListener("keydown", (e) => {
@@ -134,5 +168,6 @@
   document.addEventListener("i18n:changed", () => {
     loadPriceChart(document.querySelector(".price-tab.active")?.dataset.material || "rebar");
     if (lastParsed) renderBom(lastParsed);
+    if (lastPricing) renderPricing(lastPricing);
   });
 })();

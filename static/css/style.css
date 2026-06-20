@@ -130,12 +130,13 @@ h1, h2, h3, h4, p { margin: 0; }
 }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 19px; }
 .brand-mark {
-  width: 38px; height: 38px; border-radius: 11px;
-  background: linear-gradient(140deg, var(--primary), #5a8bff);
+  width: 42px; height: 42px; border-radius: 11px; padding: 3px;
+  background: #fff;
   display: flex; align-items: center; justify-content: center;
-  color: #fff; box-shadow: var(--shadow-sm);
-  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0; overflow: hidden;
 }
+.brand-mark img { width: 100%; height: 100%; object-fit: contain; }
 .nav-links { display: flex; align-items: center; gap: 4px; }
 .nav-link {
   padding: 9px 16px; border-radius: 999px; font-weight: 600; font-size: 14.5px;
@@ -300,6 +301,24 @@ h1, h2, h3, h4, p { margin: 0; }
 .why-card .step-num { background: var(--accent-soft); color: #9a6510; }
 .why-card h3 { font-size: 17px; font-weight: 800; margin-bottom: 10px; }
 .why-card p { color: var(--text-muted); font-size: 14px; }
+
+/* =================== PRICING =================== */
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.pricing-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 30px 26px; box-shadow: var(--shadow-sm); text-align: center;
+  transition: transform .2s, box-shadow .2s;
+}
+.pricing-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.pricing-card.featured { border-color: var(--primary); box-shadow: 0 16px 32px -14px rgba(36,84,232,.35); }
+.pricing-card .badge { margin-bottom: 14px; }
+.pricing-card h3 { font-size: 17px; font-weight: 800; margin-bottom: 6px; }
+.pricing-desc { font-size: 13px; color: var(--text-muted); min-height: 36px; }
+.pricing-price { margin: 18px 0; }
+.pricing-price b { font-size: 30px; font-weight: 800; }
+.pricing-price span { font-size: 12.5px; color: var(--text-muted); display: block; margin-top: 4px; }
+.pricing-fee-note { text-align: center; margin-top: 26px; font-size: 13.5px; color: var(--text-muted); }
+.pricing-fee-note b { color: var(--primary-dark); }
 
 /* =================== STATS =================== */
 .stats-band {
@@ -473,10 +492,10 @@ h1, h2, h3, h4, p { margin: 0; }
 .auth-card-wide { max-width: 640px; }
 .auth-card-head { text-align: center; margin-bottom: 26px; }
 .auth-mark {
-  width: 46px; height: 46px; border-radius: 13px; margin: 0 auto 16px;
+  width: 64px; height: 64px; border-radius: 16px; margin: 0 auto 16px; padding: 4px;
   display: flex; align-items: center; justify-content: center;
+  background: #fff; box-shadow: var(--shadow-sm);
 }
-.auth-mark svg { width: 22px; height: 22px; }
 .auth-card-head h1 { font-size: 21px; font-weight: 800; }
 .auth-card-head p { margin-top: 8px; font-size: 13.5px; }
 .auth-role-grid { grid-template-columns: repeat(2, 1fr); }
@@ -512,7 +531,7 @@ h1, h2, h3, h4, p { margin: 0; }
 
 /* =================== RESPONSIVE =================== */
 @media (max-width: 980px) {
-  .steps, .why-grid, .stats-band { grid-template-columns: repeat(2, 1fr); }
+  .steps, .why-grid, .pricing-grid, .stats-band { grid-template-columns: repeat(2, 1fr); }
   .cat-grid { grid-template-columns: repeat(4, 1fr); }
   .stat-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-grid { grid-template-columns: 1fr 1fr; }
@@ -531,7 +550,7 @@ h1, h2, h3, h4, p { margin: 0; }
   .stats-band, .stat-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 560px) {
-  .steps, .why-grid { grid-template-columns: 1fr; }
+  .steps, .why-grid, .pricing-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
   .stat-grid { grid-template-columns: 1fr; }
 }

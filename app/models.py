@@ -168,13 +168,15 @@ class CommissionSettings(db.Model):
     __tablename__ = "commission_settings"
 
     id = db.Column(db.Integer, primary_key=True)
-    tier1_monthly = db.Column(db.Integer, default=1_500_000)
-    tier2_monthly = db.Column(db.Integer, default=4_000_000)
-    fee_percent = db.Column(db.Float, default=2.0)
+    tier1_monthly = db.Column(db.Integer, default=1_000_000)
+    tier2_monthly = db.Column(db.Integer, default=3_000_000)
+    tier3_monthly = db.Column(db.Integer, default=5_000_000)
+    fee_percent = db.Column(db.Float, default=3.0)
 
     def to_dict(self):
         return {
             "tier1_monthly": self.tier1_monthly,
             "tier2_monthly": self.tier2_monthly,
+            "tier3_monthly": self.tier3_monthly,
             "fee_percent": self.fee_percent,
         }

@@ -216,6 +216,8 @@ def update_commission_settings(body):
         settings.tier1_monthly = int(body["tier1_monthly"])
     if "tier2_monthly" in body:
         settings.tier2_monthly = int(body["tier2_monthly"])
+    if "tier3_monthly" in body:
+        settings.tier3_monthly = int(body["tier3_monthly"])
     if "fee_percent" in body:
         settings.fee_percent = float(body["fee_percent"])
     db.session.commit()

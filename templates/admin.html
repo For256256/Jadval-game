@@ -60,9 +60,10 @@
 
 <div class="panel" id="commissionPanel" data-reveal>
   <div class="panel-head"><h2 data-i18n="admin.commission_title">نرخ کمیسیون معاملات</h2></div>
-  <div class="field-row">
-    <div class="field"><label data-i18n="admin.commission_tier1">اشتراک پایه (ماهانه)</label><input type="number" id="tier1Input" /></div>
-    <div class="field"><label data-i18n="admin.commission_tier2">اشتراک طلایی (ماهانه)</label><input type="number" id="tier2Input" /></div>
+  <div class="field-row" style="grid-template-columns:repeat(3,1fr)">
+    <div class="field"><label data-i18n="admin.commission_tier1">پلن پایه (ماهانه)</label><input type="number" id="tier1Input" /></div>
+    <div class="field"><label data-i18n="admin.commission_tier2">پلن حرفه‌ای (ماهانه)</label><input type="number" id="tier2Input" /></div>
+    <div class="field"><label data-i18n="admin.commission_tier3">پلن سازمانی (ماهانه)</label><input type="number" id="tier3Input" /></div>
   </div>
   <div class="field" style="max-width:240px">
     <label data-i18n="admin.commission_fee">کارمزد هر معامله (٪)</label>
