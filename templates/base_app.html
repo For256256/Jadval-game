@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+{% include "partials/head.html" %}
+</head>
+<body>
+
+<div class="app-shell">
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="sidebar">
+    <a href="/" class="brand">
+      <span class="brand-mark"><i data-lucide="layers" style="width:20px;height:20px"></i></span>
+      <span data-i18n="common.brand">سازه‌مارکت</span>
+    </a>
+
+    {% block sidebar_nav %}{% endblock %}
+
+    <div class="sidebar-footer">
+      <div class="role-pill">
+        <span class="role-avatar">{{ role_initial }}</span>
+        <div>
+          <div style="color:#fff;font-weight:700" data-i18n="{{ role_label_key }}">{{ role_label_fallback }}</div>
+          <a href="/" style="font-size:11.5px;color:#8590b3" data-i18n="nav.logout">خروج</a>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <div class="topbar">
+      <div class="flex gap-12" style="align-items:center">
+        <button class="burger btn btn-ghost btn-sm" id="burgerBtn" aria-label="menu"><i data-lucide="menu"></i></button>
+        <h1 data-i18n="{{ page_title_key }}">{{ page_title_fallback }}</h1>
+      </div>
+      <div class="navbar-actions">
+        <span class="badge badge-muted" data-i18n="common.demo_badge">نسخه نمایشی</span>
+        {% include "partials/lang_menu.html" %}
+      </div>
+    </div>
+
+    <div class="content">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+</div>
+
+{% include "partials/toast_stack.html" %}
+
+<script src="{{ url_for('static', filename='js/i18n.js') }}"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
