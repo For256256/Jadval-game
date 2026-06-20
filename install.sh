@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 ###############################################################################
 #  نصب‌کنندهٔ تک‌خطی پلتفرم «سازه‌مارکت» روی سرور اوبونتو
-#  اجرا:
-#     curl -fsSL <URL>/install.sh | sudo bash
-#  یا پس از کپی پروژه:
+#  اجرا (بدون نیاز به کلون دستی؛ خودش سورس را از گیت‌هاب می‌گیرد):
+#     curl -fsSL https://raw.githubusercontent.com/For256256/Jadval-game/main/install.sh | sudo bash
+#  یا پس از کپی/کلون دستی پروژه:
 #     sudo bash install.sh
 ###############################################################################
 set -euo pipefail
@@ -15,6 +15,8 @@ HOST="0.0.0.0"
 PORT="${PORT:-8080}"
 SERVICE="/etc/systemd/system/${APP_NAME}.service"
 PY="python3"
+REPO_URL="${REPO_URL:-https://github.com/For256256/Jadval-game.git}"
+BRANCH="${BRANCH:-main}"
 
 GREEN='\033[0;32m'; YEL='\033[1;33m'; RED='\033[0;31m'; NC='\033[0m'
 say(){ echo -e "${GREEN}▶ $*${NC}"; }
@@ -27,15 +29,18 @@ fi
 say "۱) به‌روزرسانی فهرست بسته‌ها و نصب پیش‌نیازها…"
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -y
-apt-get install -y python3 python3-venv python3-pip curl ufw
+apt-get install -y python3 python3-venv python3-pip git curl ufw
 
 say "۲) آماده‌سازی پوشهٔ برنامه در ${APP_DIR}…"
-mkdir -p "${APP_DIR}"
 SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 if [[ -f "${SRC_DIR}/app/server.py" ]]; then
+  say "استفاده از فایل‌های موجود کنار اسکریپت…"
+  mkdir -p "${APP_DIR}"
   cp -r "${SRC_DIR}/." "${APP_DIR}/"
 else
-  warn "فایل‌های پروژه در کنار اسکریپت یافت نشد. فرض می‌شود فایل‌ها از قبل در ${APP_DIR} هستند."
+  say "دریافت سورس پروژه از ${REPO_URL} (شاخهٔ ${BRANCH})…"
+  rm -rf "${APP_DIR}"
+  git clone --depth 1 --branch "${BRANCH}" "${REPO_URL}" "${APP_DIR}"
 fi
 
 say "۳) ساخت محیط مجازی پایتون و نصب وابستگی‌ها…"

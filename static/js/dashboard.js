@@ -7,10 +7,11 @@
   function statBlock(projects) {
     const openRfqs = projects.reduce((s, p) => s + p.rfqs.filter((r) => r.status === "open").length, 0);
     const newQuotes = projects.reduce((s, p) => s + p.rfqs.reduce((sq, r) => sq + r.quotes.length, 0), 0);
-    document.getElementById("statActiveProjects").textContent = projects.length;
-    document.getElementById("statOpenRfqs").textContent = openRfqs;
-    document.getElementById("statQuotes").textContent = newQuotes;
-    document.getElementById("statSaved").textContent = `${fmtNum(Math.round(newQuotes * 4.2))}M`;
+    const saved = Math.round(newQuotes * 4.2);
+    window.Motion.animateValue(document.getElementById("statActiveProjects"), projects.length);
+    window.Motion.animateValue(document.getElementById("statOpenRfqs"), openRfqs);
+    window.Motion.animateValue(document.getElementById("statQuotes"), newQuotes);
+    window.Motion.animateValue(document.getElementById("statSaved"), saved, { format: (v) => `${fmtNum(Math.round(v))}M` });
   }
 
   function renderBomMini(bom) {
@@ -53,7 +54,7 @@
     const wrap = document.getElementById("projectsList");
     wrap.innerHTML = PROJECTS.map(
       (p) => `
-      <div class="project-card">
+      <div class="project-card spot-card" data-reveal>
         <div class="project-card-head">
           <div>
             <h3>${window.I18N.pick(p.name)}</h3>
@@ -77,6 +78,7 @@
         openQuotesModal(pid, rid);
       });
     });
+    window.Motion.refresh(wrap);
   }
 
   function openQuotesModal(pid, rid) {
