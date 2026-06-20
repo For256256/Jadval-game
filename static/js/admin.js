@@ -110,6 +110,7 @@
     const settings = await fetchJSON("/api/admin/commission");
     document.getElementById("tier1Input").value = settings.tier1_monthly;
     document.getElementById("tier2Input").value = settings.tier2_monthly;
+    document.getElementById("tier3Input").value = settings.tier3_monthly;
     document.getElementById("feeInput").value = settings.fee_percent;
   }
 
@@ -120,6 +121,7 @@
         body: JSON.stringify({
           tier1_monthly: Number(document.getElementById("tier1Input").value),
           tier2_monthly: Number(document.getElementById("tier2Input").value),
+          tier3_monthly: Number(document.getElementById("tier3Input").value),
           fee_percent: Number(document.getElementById("feeInput").value),
         }),
       });

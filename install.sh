@@ -11,6 +11,7 @@ set -euo pipefail
 # ---------- پیکربندی ----------
 APP_NAME="sazehmarket"
 APP_DIR="/opt/${APP_NAME}"
+DATA_DIR="/var/lib/${APP_NAME}"
 HOST="0.0.0.0"
 PORT="${PORT:-8080}"
 SERVICE="/etc/systemd/system/${APP_NAME}.service"
@@ -51,9 +52,18 @@ source venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
 
-say "۴) ساخت سرویس systemd برای اجرای دائمی…"
+say "۴) آماده‌سازی پوشهٔ دادهٔ پایدار در ${DATA_DIR}…"
+# پایگاه‌داده عمداً خارج از ${APP_DIR} نگه‌داری می‌شود تا با هر بازنصب/به‌روزرسانی
+# (که ${APP_DIR} را پاک و دوباره از گیت‌هاب کلون می‌کند) از بین نرود.
+mkdir -p "${DATA_DIR}"
+
+say "۵) ساخت سرویس systemd برای اجرای دائمی…"
 SECRET_KEY="$(python - <<'PYEOF'
 import secrets;print(secrets.token_hex(32))
+PYEOF
+)"
+ADMIN_PASSWORD="$(python - <<'PYEOF'
+import secrets;print(secrets.token_urlsafe(12))
 PYEOF
 )"
 cat > "${SERVICE}" <<EOF
@@ -66,6 +76,8 @@ Type=simple
 WorkingDirectory=${APP_DIR}
 Environment=PORT=${PORT}
 Environment=SECRET_KEY=${SECRET_KEY}
+Environment=DATABASE_URL=sqlite:///${DATA_DIR}/sazehmarket.db
+Environment=ADMIN_PASSWORD=${ADMIN_PASSWORD}
 ExecStart=${APP_DIR}/venv/bin/gunicorn --workers 3 --bind ${HOST}:${PORT} app.server:app
 Restart=always
 RestartSec=3
@@ -73,6 +85,15 @@ RestartSec=3
 [Install]
 WantedBy=multi-user.target
 EOF
+
+# این مقدار فقط در صورتی توسط برنامه استفاده می‌شود که حساب مدیر سیستم برای
+# نخستین بار ساخته شود؛ در نصب‌های بعدی نادیده گرفته می‌شود.
+ADMIN_CREDS_FILE="${DATA_DIR}/admin_credentials.txt"
+cat > "${ADMIN_CREDS_FILE}" <<EOF
+ایمیل مدیر سیستم: admin@sazehmarket.app
+رمز عبور (در صورت نصب اولیه): ${ADMIN_PASSWORD}
+EOF
+chmod 600 "${ADMIN_CREDS_FILE}"
 
 say "۵) باز کردن پورت ${PORT} در فایروال…"
 if command -v ufw >/dev/null 2>&1; then

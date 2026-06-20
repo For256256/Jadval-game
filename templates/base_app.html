@@ -9,7 +9,7 @@
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
   <aside class="sidebar">
     <a href="/" class="brand">
-      <span class="brand-mark"><i data-lucide="layers" style="width:20px;height:20px"></i></span>
+      <span class="brand-mark"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="سازه‌مارکت" /></span>
       <span data-i18n="common.brand">سازه‌مارکت</span>
     </a>
 
@@ -20,7 +20,7 @@
         <span class="role-avatar">{{ role_initial }}</span>
         <div>
           <div style="color:#fff;font-weight:700" data-i18n="{{ role_label_key }}">{{ role_label_fallback }}</div>
-          <a href="/" style="font-size:11.5px;color:#8590b3" data-i18n="nav.logout">خروج</a>
+          <a href="/logout" style="font-size:11.5px;color:#8590b3" data-i18n="nav.logout">خروج</a>
         </div>
       </div>
     </div>

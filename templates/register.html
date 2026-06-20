@@ -1,0 +1,85 @@
+{% extends "base_marketing.html" %}
+
+{% block title %}ثبت‌نام | سازه‌مارکت{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+  <div class="container">
+    <div class="auth-card auth-card-wide spot-card" data-reveal>
+      <div class="auth-card-head">
+        <span class="brand-mark auth-mark"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="سازه‌مارکت" /></span>
+        <h1 data-i18n="auth.register_title">ساخت حساب کاربری</h1>
+        <p class="muted" data-i18n="auth.register_subtitle">به‌عنوان خریدار یا تأمین‌کننده در بازار دیجیتال مصالح ساختمانی عضو شوید.</p>
+      </div>
+
+      {% if error %}
+      <div class="auth-alert">{{ error }}</div>
+      {% endif %}
+
+      <form method="post" action="{{ url_for('register', next=request.args.get('next')) }}" class="auth-form">
+        <div class="role-grid auth-role-grid">
+          <label class="role-card role-option{{ ' active' if role != 'supplier' else '' }}">
+            <input type="radio" name="role" value="buyer" {{ 'checked' if role != 'supplier' else '' }} />
+            <div class="cat-icon"><i data-lucide="building-2"></i></div>
+            <span data-i18n="common.role_buyer">خریدار / پیمانکار</span>
+          </label>
+          <label class="role-card role-option{{ ' active' if role == 'supplier' else '' }}">
+            <input type="radio" name="role" value="supplier" {{ 'checked' if role == 'supplier' else '' }} />
+            <div class="cat-icon"><i data-lucide="truck"></i></div>
+            <span data-i18n="common.role_supplier">تأمین‌کننده</span>
+          </label>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label data-i18n="auth.name_label">نام و نام خانوادگی</label>
+            <input type="text" name="name" required value="{{ name or '' }}" />
+          </div>
+          <div class="field">
+            <label data-i18n="auth.company_label">نام شرکت (اختیاری)</label>
+            <input type="text" name="company_name" value="{{ company_name or '' }}" />
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label data-i18n="auth.email_label">ایمیل</label>
+            <input type="email" name="email" required autocomplete="email" value="{{ email or '' }}" />
+          </div>
+          <div class="field">
+            <label data-i18n="auth.password_label">رمز عبور</label>
+            <input type="password" name="password" required minlength="6" autocomplete="new-password" placeholder="حداقل ۶ کاراکتر" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label data-i18n="auth.city_label">شهر</label>
+          <select name="city">
+            {% for c in cities %}
+            <option value="{{ c.fa }}" {{ 'selected' if city_fa == c.fa else '' }}>{{ c.fa }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="common.signup">ثبت‌نام رایگان</button>
+      </form>
+
+      <p class="auth-switch">
+        <span data-i18n="auth.has_account">قبلاً ثبت‌نام کرده‌اید؟</span>
+        <a href="{{ url_for('login') }}" data-i18n="common.login">ورود</a>
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.querySelectorAll(".role-option").forEach((el) => {
+    el.addEventListener("click", () => {
+      document.querySelectorAll(".role-option").forEach((o) => o.classList.remove("active"));
+      el.classList.add("active");
+    });
+  });
+</script>
+{% endblock %}
