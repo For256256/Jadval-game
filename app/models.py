@@ -104,9 +104,7 @@ class Quote(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     rfq_id = db.Column(db.Integer, db.ForeignKey("rfqs.id"), nullable=False)
-    # برای پیشنهادهای واقعی یک تأمین‌کننده ثبت‌شده؛ خالی برای پیشنهادهای نمایشیِ رقبا
-    supplier_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
-    supplier_name = db.Column(db.JSON)  # عکس فوری نام، برای پیشنهادهای نمایشی بدون حساب واقعی
+    supplier_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     price = db.Column(db.Float, nullable=False)
     payment_terms = db.Column(db.JSON)
     delivery_days = db.Column(db.Integer, default=5)
@@ -118,10 +116,9 @@ class Quote(db.Model):
     supplier = db.relationship("User", back_populates="quotes", foreign_keys=[supplier_id])
 
     def to_dict(self):
-        supplier_label = self.supplier.display_name if self.supplier else None
         return {
             "id": self.id,
-            "supplier": supplier_label or self.supplier_name,
+            "supplier": self.supplier.display_name,
             "price": self.price,
             "payment_terms": self.payment_terms,
             "delivery_days": self.delivery_days,
