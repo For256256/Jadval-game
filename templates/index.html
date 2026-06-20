@@ -2,6 +2,8 @@
 {% block content %}
 
 <section class="hero">
+  <span class="hero-blob hero-blob-1"></span>
+  <span class="hero-blob hero-blob-2"></span>
   <div class="container hero-inner">
     <span class="eyebrow"><span class="live-dot"></span> <span data-i18n="home.hero_eyebrow">بازار دیجیتال مصالح و تجهیزات صنعت ساختمان</span></span>
     <h1 data-i18n="home.hero_title">نیاز پروژه‌ات را تایپ کن؛ هوش مصنوعی بقیه را می‌سپارد</h1>
@@ -52,7 +54,7 @@
     <div class="section-head">
       <h2 data-i18n="home.price_widget_title">نوسانات قیمت لحظه‌ای بازار</h2>
     </div>
-    <div class="price-card">
+    <div class="price-card spot-card" data-reveal>
       <div class="price-tabs">
         <button class="price-tab active" data-material="rebar" data-i18n="home.price_tab_rebar">میلگرد</button>
         <button class="price-tab" data-material="beam" data-i18n="home.price_tab_beam">تیرآهن</button>
@@ -75,22 +77,22 @@
       <h2 data-i18n="home.how_title">از نیاز تا تأمین، در ۴ گام</h2>
     </div>
     <div class="steps">
-      <div class="step-card">
+      <div class="step-card spot-card" data-reveal>
         <div class="step-num">۱</div>
         <h3 data-i18n="home.how_step1_title">ایجاد پروژه</h3>
         <p data-i18n="home.how_step1_desc">پروژه خود را در پنل تعریف کنید؛ مثلاً برج مسکونی یا کارخانه.</p>
       </div>
-      <div class="step-card">
+      <div class="step-card spot-card" data-reveal>
         <div class="step-num">۲</div>
         <h3 data-i18n="home.how_step2_title">ثبت درخواست هوشمند</h3>
         <p data-i18n="home.how_step2_desc">نیاز خود را به زبان ساده تایپ کنید تا هوش مصنوعی فهرست مصالح را بسازد.</p>
       </div>
-      <div class="step-card">
+      <div class="step-card spot-card" data-reveal>
         <div class="step-num">۳</div>
         <h3 data-i18n="home.how_step3_title">مرکز پیشنهادات</h3>
         <p data-i18n="home.how_step3_desc">قیمت و شرایط چند تأمین‌کننده معتبر را مقایسه و بهترین را انتخاب کنید.</p>
       </div>
-      <div class="step-card">
+      <div class="step-card spot-card" data-reveal>
         <div class="step-num">۴</div>
         <h3 data-i18n="home.how_step4_title">تسویه و تکمیل</h3>
         <p data-i18n="home.how_step4_desc">صدور پیش‌فاکتور و مدیریت پرداخت، یکپارچه در پلتفرم.</p>
@@ -104,7 +106,7 @@
     <div class="section-head">
       <h2 data-i18n="home.categories_title">حوزه‌های فعالیت</h2>
     </div>
-    <div class="cat-grid" id="categoriesGrid"></div>
+    <div class="cat-grid" id="categoriesGrid" data-reveal></div>
   </div>
 </section>
 
@@ -114,17 +116,17 @@
       <h2 data-i18n="home.why_title">چرا سازه‌مارکت؟</h2>
     </div>
     <div class="why-grid">
-      <div class="why-card">
+      <div class="why-card spot-card" data-reveal>
         <div class="step-num"><i data-lucide="store" style="width:18px;height:18px"></i></div>
         <h3 data-i18n="home.why_card1_title">بازار + استعلام هوشمند</h3>
         <p data-i18n="home.why_card1_desc">ترکیب فروشگاه دیجیتال با موتور RFQ که در بازار ایران بی‌نظیر است.</p>
       </div>
-      <div class="why-card">
+      <div class="why-card spot-card" data-reveal>
         <div class="step-num"><i data-lucide="brain-circuit" style="width:18px;height:18px"></i></div>
         <h3 data-i18n="home.why_card2_title">تطبیق با هوش مصنوعی</h3>
         <p data-i18n="home.why_card2_desc">امتیازدهی فروشندگان بر اساس فاصله، سابقه و نرخ پاسخگویی برای بهترین پیشنهاد.</p>
       </div>
-      <div class="why-card">
+      <div class="why-card spot-card" data-reveal>
         <div class="step-num"><i data-lucide="trending-up" style="width:18px;height:18px"></i></div>
         <h3 data-i18n="home.why_card3_title">شفافیت قیمت</h3>
         <p data-i18n="home.why_card3_desc">پیش‌بینی و رهگیری روند قیمت میلگرد، ورق و تیرآهن با تحلیل بازار.</p>
@@ -136,17 +138,17 @@
 <section class="section">
   <div class="container">
     <div class="stats-band">
-      <div class="stat-item"><h3>۴۰۰+ هزار میلیارد</h3><p data-i18n="home.stats_market">گردش مالی سالانه فولاد ایران (تومان)</p></div>
-      <div class="stat-item"><h3>&lt; ۵٪</h3><p data-i18n="home.stats_online">سهم معاملات آنلاین کنونی</p></div>
-      <div class="stat-item"><h3>۱,۰۰۰</h3><p data-i18n="home.stats_suppliers">تأمین‌کننده هدف سال اول</p></div>
-      <div class="stat-item"><h3>۵+</h3><p data-i18n="home.stats_cities">شهر تحت پوشش</p></div>
+      <div class="stat-item" data-reveal><h3>۴۰۰+ هزار میلیارد</h3><p data-i18n="home.stats_market">گردش مالی سالانه فولاد ایران (تومان)</p></div>
+      <div class="stat-item" data-reveal><h3>&lt; ۵٪</h3><p data-i18n="home.stats_online">سهم معاملات آنلاین کنونی</p></div>
+      <div class="stat-item" data-reveal><h3>۱,۰۰۰</h3><p data-i18n="home.stats_suppliers">تأمین‌کننده هدف سال اول</p></div>
+      <div class="stat-item" data-reveal><h3>۵+</h3><p data-i18n="home.stats_cities">شهر تحت پوشش</p></div>
     </div>
   </div>
 </section>
 
 <section class="section">
   <div class="container">
-    <div class="cta-banner">
+    <div class="cta-banner" data-reveal>
       <h2 data-i18n="home.cta_banner_title">همین حالا به بازار دیجیتال مصالح بپیوندید</h2>
       <p data-i18n="home.cta_banner_desc">ثبت درخواست رایگان است و در کمتر از ۲ دقیقه اولین پیشنهادها را دریافت می‌کنید.</p>
       <div class="hero-ctas">
@@ -165,11 +167,12 @@
   async function renderCategories(){
     const cats = await fetchJSON('/api/categories');
     document.getElementById('categoriesGrid').innerHTML = cats.map(c=>`
-      <div class="cat-card">
+      <div class="cat-card spot-card">
         <div class="cat-icon"><i data-lucide="${c.icon}"></i></div>
         <span>${window.I18N.pick(c.name)}</span>
       </div>`).join('');
     if (window.lucide) lucide.createIcons();
+    if (window.Motion) window.Motion.refresh(document.getElementById('categoriesGrid'));
   }
   document.addEventListener('DOMContentLoaded', renderCategories);
   document.addEventListener('i18n:changed', renderCategories);
