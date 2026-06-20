@@ -22,7 +22,7 @@
       const urgent = remaining < 300;
       const quoted = quotedIds.has(item.id);
       return `
-      <div class="project-card spot-card" data-reveal data-feed-card="${item.id}">
+      <div class="project-card" data-feed-card="${item.id}">
         <div class="project-card-head">
           <div>
             <h3>${window.I18N.pick(item.material)} — ${window.I18N.pick(item.project)}</h3>
@@ -78,7 +78,6 @@
         }
       });
     });
-    window.Motion.refresh(wrap);
   }
 
   function tickCountdowns() {
@@ -101,7 +100,7 @@
       feed = feed.filter((f) => window.I18N.pick(f.material) === productFilter);
     }
     FEED = feed;
-    window.Motion.animateValue(document.getElementById("statOpen"), FEED.length);
+    document.getElementById("statOpen").textContent = FEED.length;
     renderFeed();
   }
 
@@ -152,7 +151,7 @@
         scales: { x: { display: false }, y: { display: false } },
       },
     });
-    window.Motion.animateValue(document.getElementById("statSales"), data.series[data.series.length - 1], { format: (v) => `${fmtNum(Math.round(v))}M` });
+    document.getElementById("statSales").textContent = `${fmtNum(data.series[data.series.length - 1])}M`;
   }
 
   document.addEventListener("DOMContentLoaded", async () => {

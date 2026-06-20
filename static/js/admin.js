@@ -14,10 +14,10 @@
   }
 
   function renderStats() {
-    window.Motion.animateValue(document.getElementById("statUsers"), STATS.total_users, { format: (v) => fmtNum(Math.round(v)) });
-    window.Motion.animateValue(document.getElementById("statSuppliers"), STATS.total_suppliers, { format: (v) => fmtNum(Math.round(v)) });
-    window.Motion.animateValue(document.getElementById("statVolume"), Math.round(STATS.monthly_volume_toman / 1e9), { format: (v) => `${fmtNum(Math.round(v))}B` });
-    window.Motion.animateValue(document.getElementById("statCommission"), Math.round(STATS.monthly_commission_toman / 1e6), { format: (v) => `${fmtNum(Math.round(v))}M` });
+    document.getElementById("statUsers").textContent = fmtNum(STATS.total_users);
+    document.getElementById("statSuppliers").textContent = fmtNum(STATS.total_suppliers);
+    document.getElementById("statVolume").textContent = `${fmtNum(Math.round(STATS.monthly_volume_toman / 1e9))}B`;
+    document.getElementById("statCommission").textContent = `${fmtNum(Math.round(STATS.monthly_commission_toman / 1e6))}M`;
   }
 
   function renderUsers() {
@@ -68,14 +68,13 @@
     wrap.innerHTML = STATS.categories
       .map(
         (c) => `
-        <div class="cat-card spot-card">
+        <div class="cat-card">
           <div class="cat-icon"><i data-lucide="${c.icon}"></i></div>
           <span>${window.I18N.pick(c.name)}</span>
         </div>`
       )
       .join("");
     if (window.lucide) lucide.createIcons();
-    window.Motion.refresh(wrap);
   }
 
   function renderRevenueChart() {
