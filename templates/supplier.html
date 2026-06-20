@@ -11,29 +11,29 @@
 {% block content %}
 <a id="top"></a>
 <div class="stat-grid">
-  <div class="stat-card spot-card" data-reveal>
+  <div class="stat-card">
     <div class="stat-icon" style="background:var(--primary-soft);color:var(--primary-dark)"><i data-lucide="rss" style="width:18px;height:18px"></i></div>
     <h3 id="statOpen">0</h3>
     <p data-i18n="supplier.stat_open">استعلام‌های باز</p>
   </div>
-  <div class="stat-card spot-card" data-reveal>
+  <div class="stat-card">
     <div class="stat-icon" style="background:var(--success-soft);color:var(--success)"><i data-lucide="zap" style="width:18px;height:18px"></i></div>
     <h3>92%</h3>
     <p data-i18n="supplier.stat_response_rate">نرخ پاسخگویی</p>
   </div>
-  <div class="stat-card spot-card" data-reveal>
+  <div class="stat-card">
     <div class="stat-icon" style="background:var(--accent-soft);color:#9a6510"><i data-lucide="star" style="width:18px;height:18px"></i></div>
     <h3>4.8</h3>
     <p data-i18n="supplier.stat_rating">امتیاز فروشنده</p>
   </div>
-  <div class="stat-card spot-card" data-reveal>
+  <div class="stat-card">
     <div class="stat-icon" style="background:var(--danger-soft);color:var(--danger)"><i data-lucide="trending-up" style="width:18px;height:18px"></i></div>
     <h3 id="statSales">0</h3>
     <p data-i18n="supplier.stat_sales">فروش این ماه (م. تومان)</p>
   </div>
 </div>
 
-<div class="panel" id="feedPanel" data-reveal>
+<div class="panel" id="feedPanel">
   <div class="panel-head">
     <h2 data-i18n="supplier.feed_title">استعلام‌های مرتبط با من</h2>
     <div class="flex gap-8">
@@ -44,12 +44,12 @@
   <div id="feedList"></div>
 </div>
 
-<div class="panel" id="reportPanel" data-reveal>
+<div class="panel" id="reportPanel">
   <div class="panel-head"><h2 data-i18n="supplier.report_title">گزارش فروش ماهانه</h2></div>
   <div class="price-chart-wrap" style="height:180px"><canvas id="salesChart"></canvas></div>
 </div>
 
-<div class="panel" id="inventoryPanel" data-reveal>
+<div class="panel" id="inventoryPanel">
   <div class="panel-head"><h2 data-i18n="supplier.inventory_title">موجودی و قیمت پایه کالاها</h2></div>
   <table class="data-table">
     <thead><tr>
@@ -62,7 +62,7 @@
   </table>
 </div>
 
-<div class="panel" id="profilePanel" data-reveal>
+<div class="panel" id="profilePanel">
   <div class="panel-head"><h2 data-i18n="supplier.sidebar_profile">پروفایل شرکت</h2></div>
   <div class="field-row">
     <div class="field"><label>نام شرکت</label><input type="text" value="فولاد گسترش پارس" disabled /></div>

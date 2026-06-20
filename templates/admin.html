@@ -12,34 +12,34 @@
 {% block content %}
 <a id="top"></a>
 <div class="stat-grid">
-  <div class="stat-card spot-card" data-reveal>
+  <div class="stat-card">
     <div class="stat-icon" style="background:var(--primary-soft);color:var(--primary-dark)"><i data-lucide="users" style="width:18px;height:18px"></i></div>
     <h3 id="statUsers">0</h3>
     <p data-i18n="admin.stat_users">کل کاربران</p>
   </div>
-  <div class="stat-card spot-card" data-reveal>
+  <div class="stat-card">
     <div class="stat-icon" style="background:var(--accent-soft);color:#9a6510"><i data-lucide="truck" style="width:18px;height:18px"></i></div>
     <h3 id="statSuppliers">0</h3>
     <p data-i18n="admin.stat_suppliers">کل تأمین‌کنندگان</p>
   </div>
-  <div class="stat-card spot-card" data-reveal>
+  <div class="stat-card">
     <div class="stat-icon" style="background:var(--success-soft);color:var(--success)"><i data-lucide="banknote" style="width:18px;height:18px"></i></div>
     <h3 id="statVolume">0</h3>
     <p data-i18n="admin.stat_volume">ارزش معاملات این ماه (میلیارد تومان)</p>
   </div>
-  <div class="stat-card spot-card" data-reveal>
+  <div class="stat-card">
     <div class="stat-icon" style="background:var(--danger-soft);color:var(--danger)"><i data-lucide="percent" style="width:18px;height:18px"></i></div>
     <h3 id="statCommission">0</h3>
     <p data-i18n="admin.stat_commission">کمیسیون دریافتی (میلیون تومان)</p>
   </div>
 </div>
 
-<div class="panel" id="financePanel" data-reveal>
+<div class="panel" id="financePanel">
   <div class="panel-head"><h2 data-i18n="admin.revenue_chart_title">روند درآمد ۱۲ ماه گذشته</h2></div>
   <div class="price-chart-wrap" style="height:200px"><canvas id="revenueChart"></canvas></div>
 </div>
 
-<div class="panel" id="usersPanel" data-reveal>
+<div class="panel" id="usersPanel">
   <div class="panel-head"><h2 data-i18n="admin.users_title">مدیریت کاربران و تأمین‌کنندگان</h2></div>
   <table class="data-table">
     <thead><tr>
@@ -53,12 +53,12 @@
   </table>
 </div>
 
-<div class="panel" id="categoriesPanel" data-reveal>
+<div class="panel" id="categoriesPanel">
   <div class="panel-head"><h2 data-i18n="admin.sidebar_categories">دسته‌بندی‌ها</h2></div>
   <div class="cat-grid" id="categoriesGrid"></div>
 </div>
 
-<div class="panel" id="commissionPanel" data-reveal>
+<div class="panel" id="commissionPanel">
   <div class="panel-head"><h2 data-i18n="admin.commission_title">نرخ کمیسیون معاملات</h2></div>
   <div class="field-row">
     <div class="field"><label data-i18n="admin.commission_tier1">اشتراک پایه (ماهانه)</label><input type="number" id="tier1Input" /></div>

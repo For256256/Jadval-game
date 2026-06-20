@@ -11,29 +11,29 @@
 {% block content %}
 <a id="top"></a>
 <div class="stat-grid">
-  <div class="stat-card spot-card" data-reveal>
+  <div class="stat-card">
     <div class="stat-icon" style="background:var(--primary-soft);color:var(--primary-dark)"><i data-lucide="folder-kanban" style="width:18px;height:18px"></i></div>
     <h3 id="statActiveProjects">0</h3>
     <p data-i18n="dashboard.stat_active_projects">پروژه‌های فعال</p>
   </div>
-  <div class="stat-card spot-card" data-reveal>
+  <div class="stat-card">
     <div class="stat-icon" style="background:var(--accent-soft);color:#9a6510"><i data-lucide="file-clock" style="width:18px;height:18px"></i></div>
     <h3 id="statOpenRfqs">0</h3>
     <p data-i18n="dashboard.stat_open_rfqs">استعلام‌های باز</p>
   </div>
-  <div class="stat-card spot-card" data-reveal>
+  <div class="stat-card">
     <div class="stat-icon" style="background:var(--success-soft);color:var(--success)"><i data-lucide="badge-percent" style="width:18px;height:18px"></i></div>
     <h3 id="statQuotes">0</h3>
     <p data-i18n="dashboard.stat_quotes">پیشنهادات جدید</p>
   </div>
-  <div class="stat-card spot-card" data-reveal>
+  <div class="stat-card">
     <div class="stat-icon" style="background:var(--danger-soft);color:var(--danger)"><i data-lucide="piggy-bank" style="width:18px;height:18px"></i></div>
     <h3 id="statSaved">0</h3>
     <p data-i18n="dashboard.stat_saved">صرفه‌جویی تخمینی (تومان)</p>
   </div>
 </div>
 
-<div class="panel" id="projectsPanel" data-reveal>
+<div class="panel" id="projectsPanel">
   <div class="panel-head">
     <h2 data-i18n="dashboard.projects_title">پروژه‌های فعال</h2>
     <button class="btn btn-primary btn-sm" id="newRfqBtn">
@@ -44,7 +44,7 @@
   <div id="projectsList"></div>
 </div>
 
-<div class="panel" id="messagesPanel" data-reveal>
+<div class="panel" id="messagesPanel">
   <div class="panel-head"><h2 data-i18n="dashboard.messages_title">پیام‌رسان داخلی با تأمین‌کنندگان</h2></div>
   <div class="chat-thread" id="chatThread"></div>
   <div class="chat-input-row">
@@ -53,7 +53,7 @@
   </div>
 </div>
 
-<div class="panel" id="settingsPanel" data-reveal>
+<div class="panel" id="settingsPanel">
   <div class="panel-head"><h2 data-i18n="dashboard.sidebar_settings">تنظیمات</h2></div>
   <div class="field-row">
     <div class="field"><label data-i18n="dashboard.th_supplier">نام شرکت</label><input type="text" value="شرکت ساختمانی پویا" disabled /></div>
