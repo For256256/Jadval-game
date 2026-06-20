@@ -30,7 +30,21 @@
     "dashboard": "Buyer panel",
     "supplier": "Supplier panel",
     "admin": "Admin",
-    "logout": "Log out"
+    "logout": "Log out",
+    "my_panel": "My panel"
+  },
+  "auth": {
+    "login_title": "Log in to your account",
+    "login_subtitle": "Sign in to access the buyer, supplier or admin panel.",
+    "register_title": "Create your account",
+    "register_subtitle": "Join the digital materials marketplace as a buyer or supplier.",
+    "email_label": "Email",
+    "password_label": "Password",
+    "name_label": "Full name",
+    "company_label": "Company name (optional)",
+    "city_label": "City",
+    "no_account": "Don't have an account yet?",
+    "has_account": "Already have an account?"
   },
   "home": {
     "hero_eyebrow": "Digital marketplace for construction materials & equipment",

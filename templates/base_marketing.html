@@ -19,8 +19,13 @@
     </nav>
     <div class="navbar-actions">
       {% include "partials/lang_menu.html" %}
-      <button class="btn btn-ghost btn-sm" onclick="openModal('roleModal')" data-i18n="common.login">ورود</button>
-      <button class="btn btn-primary btn-sm" onclick="openModal('roleModal')" data-i18n="common.signup">ثبت‌نام رایگان</button>
+      {% if current_user %}
+      <a class="btn btn-ghost btn-sm" href="{{ role_home(current_user.role) }}" data-i18n="nav.my_panel">پنل من</a>
+      <a class="btn btn-outline btn-sm" href="/logout" data-i18n="nav.logout">خروج</a>
+      {% else %}
+      <a class="btn btn-ghost btn-sm" href="/login" data-i18n="common.login">ورود</a>
+      <a class="btn btn-primary btn-sm" href="/register" data-i18n="common.signup">ثبت‌نام رایگان</a>
+      {% endif %}
       <button class="burger btn btn-ghost btn-sm" id="burgerBtn" aria-label="menu"><i data-lucide="menu"></i></button>
     </div>
   </div>
@@ -68,7 +73,6 @@
 </footer>
 
 {% include "partials/toast_stack.html" %}
-{% include "partials/role_modal.html" %}
 
 <script src="{{ url_for('static', filename='js/i18n.js') }}"></script>
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>

@@ -456,10 +456,38 @@ h1, h2, h3, h4, p { margin: 0; }
 .role-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .role-card {
   border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 18px 12px; text-align: center;
-  background: var(--surface-soft);
+  background: var(--surface-soft); cursor: pointer; display: block;
 }
 .role-card:hover { border-color: var(--primary); }
 .role-card .cat-icon { background: var(--primary-soft); color: var(--primary-dark); }
+.role-card input { position: absolute; opacity: 0; pointer-events: none; }
+.role-card.active { border-color: var(--primary); background: var(--primary-soft); }
+.role-card.active .cat-icon { background: var(--primary); color: #fff; }
+
+/* =================== AUTH PAGES =================== */
+.auth-section { padding: 64px 0 90px; }
+.auth-card {
+  max-width: 460px; margin: 0 auto; background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); padding: 38px 34px;
+}
+.auth-card-wide { max-width: 640px; }
+.auth-card-head { text-align: center; margin-bottom: 26px; }
+.auth-mark {
+  width: 46px; height: 46px; border-radius: 13px; margin: 0 auto 16px;
+  display: flex; align-items: center; justify-content: center;
+}
+.auth-mark svg { width: 22px; height: 22px; }
+.auth-card-head h1 { font-size: 21px; font-weight: 800; }
+.auth-card-head p { margin-top: 8px; font-size: 13.5px; }
+.auth-role-grid { grid-template-columns: repeat(2, 1fr); }
+.auth-alert {
+  background: var(--danger-soft); color: var(--danger); border-radius: var(--radius-sm);
+  padding: 11px 14px; font-size: 13.5px; font-weight: 600; margin-bottom: 18px;
+}
+.auth-form .field:last-of-type { margin-bottom: 22px; }
+.auth-switch { text-align: center; margin-top: 20px; font-size: 13.5px; color: var(--text-muted); }
+.auth-switch a { color: var(--primary); font-weight: 700; margin-inline-start: 6px; }
+.auth-switch a:hover { text-decoration: underline; }
 
 /* =================== TOAST =================== */
 .toast-stack { position: fixed; bottom: 22px; inset-inline-end: 22px; z-index: 200; display: flex; flex-direction: column; gap: 10px; }

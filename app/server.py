@@ -4,11 +4,18 @@
 """
 import os
 import secrets as pysecrets
-from flask import Flask, jsonify, request, render_template
 
-from app import data
+from flask import Flask, g, jsonify, redirect, render_template, request, session, url_for
+
+from app import data, seed, services
+from app.auth import get_current_user, role_required_api, role_required_page
+from app.extensions import db
+from app.models import User
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+INSTANCE_DIR = os.path.join(BASE_DIR, "instance")
+os.makedirs(INSTANCE_DIR, exist_ok=True)
+DEFAULT_DB_URI = "sqlite:///" + os.path.join(INSTANCE_DIR, "sazehmarket.db")
 
 app = Flask(
     __name__,
@@ -17,6 +24,108 @@ app = Flask(
 )
 app.secret_key = os.environ.get("SECRET_KEY", pysecrets.token_hex(32))
 app.json.ensure_ascii = False
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", DEFAULT_DB_URI)
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db.init_app(app)
+
+with app.app_context():
+    db.create_all()
+    seed.run()
+
+
+@app.context_processor
+def inject_current_user():
+    return {"current_user": get_current_user(), "role_home": _role_home}
+
+
+def _role_home(role):
+    return {
+        "buyer": url_for("dashboard"),
+        "supplier": url_for("supplier"),
+        "admin": url_for("admin"),
+    }.get(role, url_for("index"))
+
+
+# ---------------------------------------------------------------------------
+# احراز هویت
+# ---------------------------------------------------------------------------
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if get_current_user():
+        return redirect(_role_home(get_current_user().role))
+
+    if request.method == "POST":
+        email = (request.form.get("email") or "").strip().lower()
+        password = request.form.get("password") or ""
+        user = User.query.filter_by(email=email).first()
+
+        if not user or not user.check_password(password):
+            return render_template("login.html", page="login", error="ایمیل یا رمز عبور اشتباه است", email=email), 401
+        if user.status == "suspended":
+            return render_template(
+                "login.html", page="login",
+                error="حساب شما مسدود شده است؛ با مدیر سیستم تماس بگیرید", email=email,
+            ), 403
+
+        session.clear()
+        session["user_id"] = user.id
+        g.pop("_user", None)
+        next_url = request.args.get("next")
+        if next_url and next_url.startswith("/"):
+            return redirect(next_url)
+        return redirect(_role_home(user.role))
+
+    return render_template("login.html", page="login")
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if get_current_user():
+        return redirect(_role_home(get_current_user().role))
+
+    if request.method == "POST":
+        role = request.form.get("role") if request.form.get("role") in ("buyer", "supplier") else "buyer"
+        name = (request.form.get("name") or "").strip()
+        company_name = (request.form.get("company_name") or "").strip() or None
+        email = (request.form.get("email") or "").strip().lower()
+        password = request.form.get("password") or ""
+        city_fa = request.form.get("city")
+        form_state = dict(role=role, name=name, company_name=company_name, email=email, city_fa=city_fa, cities=data.CITIES)
+
+        if not name or not email or len(password) < 6:
+            return render_template(
+                "register.html", error="لطفاً همهٔ فیلدها را به‌درستی تکمیل کنید (رمز عبور حداقل ۶ کاراکتر)",
+                **form_state,
+            ), 400
+        if User.query.filter_by(email=email).first():
+            return render_template("register.html", error="این ایمیل قبلاً ثبت شده است", **form_state), 409
+
+        user = User(
+            name=name, email=email, role=role, company_name=company_name,
+            city=data.find_city_by_fa(city_fa), status="active" if role == "buyer" else "pending",
+        )
+        user.set_password(password)
+        db.session.add(user)
+        db.session.commit()
+
+        session.clear()
+        session["user_id"] = user.id
+        g.pop("_user", None)
+        next_url = request.args.get("next")
+        if next_url and next_url.startswith("/"):
+            return redirect(next_url)
+        return redirect(_role_home(user.role))
+
+    role = request.args.get("role") if request.args.get("role") in ("buyer", "supplier") else "buyer"
+    return render_template("register.html", role=role, cities=data.CITIES)
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("index"))
 
 
 # ---------------------------------------------------------------------------
@@ -29,28 +138,34 @@ def index():
 
 
 @app.route("/dashboard")
+@role_required_page("buyer")
 def dashboard():
+    user = get_current_user()
     return render_template(
         "dashboard.html", page="dashboard",
-        role_initial="خ", role_label_key="common.role_buyer", role_label_fallback="خریدار / پیمانکار",
+        role_initial=(user.display_name or "?")[:1], role_label_key="common.role_buyer", role_label_fallback="خریدار / پیمانکار",
         page_title_key="dashboard.title", page_title_fallback="پنل خریدار",
     )
 
 
 @app.route("/supplier")
+@role_required_page("supplier")
 def supplier():
+    user = get_current_user()
     return render_template(
         "supplier.html", page="supplier",
-        role_initial="ف", role_label_key="common.role_supplier", role_label_fallback="تأمین‌کننده",
+        role_initial=(user.display_name or "?")[:1], role_label_key="common.role_supplier", role_label_fallback="تأمین‌کننده",
         page_title_key="supplier.title", page_title_fallback="پنل فروشنده",
     )
 
 
 @app.route("/admin")
+@role_required_page("admin")
 def admin():
+    user = get_current_user()
     return render_template(
         "admin.html", page="admin",
-        role_initial="A", role_label_key="common.role_admin", role_label_fallback="مدیر سیستم",
+        role_initial=(user.display_name or "?")[:1], role_label_key="common.role_admin", role_label_fallback="مدیر سیستم",
         page_title_key="admin.title", page_title_fallback="مدیریت سیستم",
     )
 
@@ -88,6 +203,7 @@ def api_rfq_parse():
 
 
 @app.route("/api/rfq", methods=["POST"])
+@role_required_api("buyer")
 def api_rfq_create():
     body = request.get_json(force=True) or {}
     text = (body.get("text") or "").strip()
@@ -95,7 +211,7 @@ def api_rfq_create():
     if not text and not bom:
         return jsonify({"error": "اطلاعات درخواست ناقص است"}), 400
     parsed = {"bom": bom, "city": body.get("city")} if bom else data.parse_rfq_text(text)
-    project = data.add_project_from_rfq(parsed, text)
+    project = services.create_project_from_rfq(get_current_user(), parsed, text)
     return jsonify(project), 201
 
 
@@ -104,29 +220,28 @@ def api_rfq_create():
 # ---------------------------------------------------------------------------
 
 @app.route("/api/projects")
+@role_required_api("buyer")
 def api_projects():
-    return jsonify(data.all_projects())
+    return jsonify(services.get_buyer_projects(get_current_user()))
 
 
 @app.route("/api/projects/<int:pid>")
+@role_required_api("buyer")
 def api_project_detail(pid):
-    project = data.find_project(pid)
+    project = services.get_buyer_project_detail(get_current_user(), pid)
     if not project:
         return jsonify({"error": "پروژه یافت نشد"}), 404
     return jsonify(project)
 
 
 @app.route("/api/projects/<int:pid>/rfqs/<int:rid>/select", methods=["POST"])
+@role_required_api("buyer")
 def api_select_quote(pid, rid):
     body = request.get_json(force=True) or {}
     quote_id = body.get("quote_id")
-    project, rfq = data.find_rfq(pid, rid)
+    rfq = services.select_quote(get_current_user(), pid, rid, quote_id)
     if not rfq:
         return jsonify({"error": "استعلام یافت نشد"}), 404
-    for q in rfq["quotes"]:
-        q["selected"] = (q["id"] == quote_id)
-    rfq["status"] = "closed"
-    project["progress"] = min(100, project["progress"] + 8)
     return jsonify(rfq)
 
 
@@ -135,73 +250,67 @@ def api_select_quote(pid, rid):
 # ---------------------------------------------------------------------------
 
 @app.route("/api/supplier/feed")
+@role_required_api("supplier")
 def api_supplier_feed():
     city = request.args.get("city")
-    feed = data.supplier_feed()
-    if city:
-        feed = [f for f in feed if f["city"]["fa"] == city or f["city"]["en"] == city]
-    return jsonify(feed)
+    return jsonify(services.supplier_feed(city))
 
 
 @app.route("/api/supplier/quote", methods=["POST"])
+@role_required_api("supplier")
 def api_supplier_quote():
+    user = get_current_user()
+    if user.status != "active":
+        msg = "حساب شما هنوز توسط مدیر سیستم تأیید نشده است" if user.status == "pending" else "حساب شما مسدود شده است"
+        return jsonify({"error": msg}), 403
     body = request.get_json(force=True) or {}
-    rfq_id = body.get("rfq_id")
-    price = body.get("price")
-    delivery_days = body.get("delivery_days", 5)
-    for project in data.all_projects():
-        for rfq in project["rfqs"]:
-            if rfq["id"] == rfq_id:
-                new_quote = {
-                    "id": data.next_id(),
-                    "supplier": data.tri("شرکت شما", "شركتك", "Your Company"),
-                    "price": int(price) if price else 0,
-                    "delivery_days": int(delivery_days),
-                    "payment_terms": data.tri("نقدی", "نقدًا", "Cash"),
-                    "rating": 4.8,
-                    "selected": False,
-                }
-                rfq["quotes"].append(new_quote)
-                rfq["quotes"].sort(key=lambda q: q["price"])
-                return jsonify(new_quote), 201
-    return jsonify({"error": "استعلام یافت نشد"}), 404
+    quote, error = services.submit_supplier_quote(
+        user, body.get("rfq_id"), body.get("price"), body.get("delivery_days", 5)
+    )
+    if error:
+        return jsonify({"error": error}), 400
+    return jsonify(quote), 201
+
+
+@app.route("/api/supplier/inventory")
+@role_required_api("supplier")
+def api_supplier_inventory():
+    return jsonify(services.supplier_inventory(get_current_user()))
+
+
+@app.route("/api/supplier/sales")
+@role_required_api("supplier")
+def api_supplier_sales():
+    return jsonify(services.supplier_sales(get_current_user()))
 
 
 # ---------------------------------------------------------------------------
 # API پنل مدیر سیستم
 # ---------------------------------------------------------------------------
 
-@app.route("/api/supplier/inventory")
-def api_supplier_inventory():
-    return jsonify(data.SUPPLIER_INVENTORY)
-
-
-@app.route("/api/supplier/sales")
-def api_supplier_sales():
-    return jsonify(data.supplier_sales())
-
-
 @app.route("/api/admin/stats")
+@role_required_api("admin")
 def api_admin_stats():
-    return jsonify(data.admin_stats())
+    return jsonify(services.admin_stats())
 
 
 @app.route("/api/admin/users/<int:uid>/status", methods=["POST"])
+@role_required_api("admin")
 def api_admin_user_status(uid):
     body = request.get_json(force=True) or {}
-    status = body.get("status")
-    user = data.set_user_status(uid, status)
+    user = services.set_user_status(uid, body.get("status"))
     if not user:
         return jsonify({"error": "کاربر یافت نشد"}), 404
     return jsonify(user)
 
 
 @app.route("/api/admin/commission", methods=["GET", "POST"])
+@role_required_api("admin")
 def api_admin_commission():
     if request.method == "POST":
         body = request.get_json(force=True) or {}
-        return jsonify(data.update_commission_settings(body))
-    return jsonify(data.get_commission_settings())
+        return jsonify(services.update_commission_settings(body))
+    return jsonify(services.get_commission_settings())
 
 
 @app.route("/health")
