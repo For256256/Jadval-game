@@ -1,318 +1,177 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#0f2a30">
-<title>جدول کلمات فارسی</title>
-<link rel="manifest" href="/manifest.webmanifest">
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
-<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css">
-<style>
-:root{
-  --bg-deep:#0c2227;
-  --bg:#103138;
-  --panel:#14424b;
-  --panel-2:#0e353c;
-  --gold:#e9b949;
-  --gold-soft:#f3d27a;
-  --teal:#2bb3a3;
-  --teal-bright:#3fd6c2;
-  --cream:#f4ecd8;
-  --cream-dim:#cdbfa0;
-  --ink:#08171a;
-  --rose:#e07a5f;
-  --good:#5fc88f;
-  --line:rgba(233,185,73,.22);
-  --cell:#f4ecd8;
-  --cell-shadow:#c9b98f;
-  --radius:16px;
-  --tile:clamp(20px,4.6vw,40px);
-}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%}
-body{
-  font-family:'Vazirmatn',system-ui,sans-serif;
-  background:
-    radial-gradient(120% 80% at 80% -10%, rgba(43,179,163,.18), transparent 60%),
-    radial-gradient(100% 70% at 0% 110%, rgba(233,185,73,.12), transparent 55%),
-    var(--bg-deep);
-  color:var(--cream);
-  min-height:100%;
-  overflow-x:hidden;
-}
-/* بافت کاشی ایرانی پس‌زمینه */
-body::before{
-  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.05;
-  background-image:
-    repeating-linear-gradient(45deg, var(--gold) 0 1px, transparent 1px 22px),
-    repeating-linear-gradient(-45deg, var(--gold) 0 1px, transparent 1px 22px);
-}
-.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:14px 14px 60px}
+{% extends "base_marketing.html" %}
+{% block content %}
 
-/* ===== هدر ===== */
-header{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;padding:14px 18px;margin-bottom:16px;
-  background:linear-gradient(180deg,var(--panel),var(--panel-2));
-  border:1px solid var(--line);border-radius:var(--radius);
-  box-shadow:0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.04);
-}
-.brand{display:flex;align-items:center;gap:12px}
-.logo{
-  width:46px;height:46px;border-radius:12px;flex:none;
-  background:
-    conic-gradient(from 45deg, var(--gold), var(--teal-bright), var(--gold-soft), var(--teal), var(--gold));
-  display:grid;place-items:center;color:var(--ink);font-weight:900;font-size:22px;
-  box-shadow:0 4px 14px rgba(0,0,0,.4);
-}
-.brand h1{font-size:clamp(18px,3vw,26px);font-weight:900;letter-spacing:-.5px}
-.brand p{font-size:12px;color:var(--cream-dim);margin-top:2px;font-weight:500}
-.stats{display:flex;gap:8px;flex-wrap:wrap}
-.chip{
-  background:rgba(8,23,26,.55);border:1px solid var(--line);
-  border-radius:999px;padding:7px 13px;font-size:13px;font-weight:700;
-  display:flex;align-items:center;gap:6px;
-}
-.chip b{color:var(--gold)}
+<section class="hero">
+  <div class="container hero-inner">
+    <span class="eyebrow"><span class="live-dot"></span> <span data-i18n="home.hero_eyebrow">بازار دیجیتال مصالح و تجهیزات صنعت ساختمان</span></span>
+    <h1 data-i18n="home.hero_title">نیاز پروژه‌ات را تایپ کن؛ هوش مصنوعی بقیه را می‌سپارد</h1>
+    <p class="lead" data-i18n="home.hero_subtitle">سازه‌مارکت خریداران، پیمانکاران و تأمین‌کنندگان مصالح ساختمانی و صنعتی را در یک بازار دیجیتال یکپارچه با موتور استعلام هوشمند (RFQ) به هم متصل می‌کند.</p>
 
-/* ===== انتخاب مرحله ===== */
-.levels{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 12px;scrollbar-width:thin;margin-bottom:8px}
-.levels::-webkit-scrollbar{height:6px}
-.levels::-webkit-scrollbar-thumb{background:var(--line);border-radius:9px}
-.lvl{
-  flex:none;min-width:78px;padding:10px 12px;border-radius:14px;cursor:pointer;
-  background:var(--panel-2);border:1px solid var(--line);
-  text-align:center;transition:.18s;position:relative;
-}
-.lvl:hover{transform:translateY(-2px);border-color:var(--teal)}
-.lvl.active{background:linear-gradient(180deg,var(--gold),var(--gold-soft));color:var(--ink);border-color:var(--gold)}
-.lvl.done::after{content:"✓";position:absolute;top:-6px;left:-6px;width:20px;height:20px;
-  background:var(--good);color:#06201a;border-radius:50%;font-size:12px;font-weight:900;
-  display:grid;place-items:center;box-shadow:0 2px 6px rgba(0,0,0,.4)}
-.lvl .n{font-size:20px;font-weight:900;line-height:1}
-.lvl .t{font-size:11px;margin-top:3px;opacity:.85}
-.lvl.locked{opacity:.4;cursor:not-allowed}
-
-/* ===== چیدمان اصلی ===== */
-.game{display:grid;grid-template-columns:1fr;gap:16px}
-@media(min-width:900px){.game{grid-template-columns:auto 1fr}}
-
-.board-card{
-  background:linear-gradient(180deg,var(--panel),var(--panel-2));
-  border:1px solid var(--line);border-radius:var(--radius);
-  padding:16px;box-shadow:0 16px 40px rgba(0,0,0,.4);
-  display:flex;flex-direction:column;align-items:center;gap:12px;
-}
-.board-title{display:flex;align-items:center;gap:10px;width:100%;justify-content:space-between}
-.board-title .name{font-weight:900;font-size:18px;color:var(--gold-soft)}
-.board-scroll{width:100%;overflow:auto;display:flex;justify-content:center}
-.grid{display:grid;gap:3px;direction:rtl;padding:6px;background:rgba(8,23,26,.4);border-radius:10px}
-.cell{
-  width:var(--tile);height:var(--tile);position:relative;border-radius:5px;
-}
-.cell.block{background:transparent}
-.cell.open{
-  background:linear-gradient(180deg,#fbf5e6,var(--cell));
-  box-shadow:inset 0 -2px 0 var(--cell-shadow),0 1px 2px rgba(0,0,0,.25);
-  cursor:pointer;transition:.12s;
-}
-.cell.open:hover{filter:brightness(1.04)}
-.cell.open.sel{background:linear-gradient(180deg,#fff3c4,#ffe98a);box-shadow:inset 0 0 0 2px var(--gold),0 0 10px rgba(233,185,73,.5)}
-.cell.open.inword{background:linear-gradient(180deg,#d9f3ee,#bfe9e1)}
-.cell.open.correct{background:linear-gradient(180deg,#cdeccd,#aadcae)}
-.cell.open.key{box-shadow:inset 0 0 0 2px var(--rose),0 1px 2px rgba(0,0,0,.25)}
-.cell .num{position:absolute;top:1px;right:3px;font-size:9px;font-weight:800;color:#8a7a4f;line-height:1}
-.cell .ltr{
-  width:100%;height:100%;display:grid;place-items:center;
-  font-weight:800;font-size:calc(var(--tile)*.52);color:var(--ink);
-}
-.cell.key .keydot{position:absolute;bottom:1px;left:2px;width:6px;height:6px;border-radius:50%;background:var(--rose)}
-
-/* ===== پنل سرنخ‌ها ===== */
-.clue-card{
-  background:linear-gradient(180deg,var(--panel),var(--panel-2));
-  border:1px solid var(--line);border-radius:var(--radius);
-  padding:16px;box-shadow:0 16px 40px rgba(0,0,0,.4);
-  display:flex;flex-direction:column;min-height:0;
-}
-.tabs{display:flex;gap:8px;margin-bottom:12px}
-.tab{flex:1;padding:10px;border-radius:11px;background:var(--panel-2);border:1px solid var(--line);
-  cursor:pointer;font-weight:800;text-align:center;transition:.15s}
-.tab.active{background:var(--teal);color:#04221d;border-color:var(--teal-bright)}
-.clue-list{display:flex;flex-direction:column;gap:7px;max-height:420px;overflow-y:auto;padding-left:4px}
-.clue-list::-webkit-scrollbar{width:7px}
-.clue-list::-webkit-scrollbar-thumb{background:var(--line);border-radius:9px}
-.clue{
-  display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:11px;
-  background:rgba(8,23,26,.4);border:1px solid transparent;cursor:pointer;transition:.13s;
-}
-.clue:hover{border-color:var(--teal)}
-.clue.active{background:rgba(43,179,163,.15);border-color:var(--teal)}
-.clue.solved{opacity:.55}
-.clue.solved .ctext{text-decoration:line-through}
-.clue .cnum{flex:none;width:26px;height:26px;border-radius:8px;background:var(--gold);color:var(--ink);
-  font-weight:900;font-size:13px;display:grid;place-items:center}
-.clue.solved .cnum{background:var(--good);color:#06201a}
-.ctext{font-size:14px;line-height:1.6;font-weight:500}
-.clen{font-size:11px;color:var(--cream-dim);margin-top:2px}
-
-/* ===== ورودی کلمه ===== */
-.entry{
-  position:sticky;bottom:0;margin-top:14px;padding:14px;border-radius:14px;
-  background:rgba(8,23,26,.7);backdrop-filter:blur(8px);border:1px solid var(--line);
-}
-.entry-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:13px}
-.entry-head .q{color:var(--gold-soft);font-weight:700}
-.boxes{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;direction:rtl;margin-bottom:10px}
-.boxes input{
-  width:40px;height:46px;text-align:center;font-size:22px;font-weight:800;
-  border-radius:9px;border:2px solid var(--line);background:var(--cream);color:var(--ink);
-  font-family:'Vazirmatn',sans-serif;transition:.12s;
-}
-.boxes input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(233,185,73,.25)}
-.boxes input.ok{background:#cdeccd;border-color:var(--good)}
-.boxes input.bad{background:#f6d3ca;border-color:var(--rose);animation:shake .35s}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-.entry-actions{display:flex;gap:8px}
-.btn{flex:1;padding:12px;border-radius:11px;border:none;cursor:pointer;font-weight:800;
-  font-family:'Vazirmatn',sans-serif;font-size:15px;transition:.15s}
-.btn:active{transform:scale(.97)}
-.btn-go{background:linear-gradient(180deg,var(--gold),var(--gold-soft));color:var(--ink)}
-.btn-go:hover{filter:brightness(1.05)}
-.btn-hint{background:var(--panel);color:var(--cream);border:1px solid var(--line);flex:0 0 auto;padding:12px 16px}
-.btn-hint:hover{border-color:var(--teal)}
-
-/* ===== مودال رمز ===== */
-.modal-bg{position:fixed;inset:0;z-index:50;background:rgba(4,12,14,.82);backdrop-filter:blur(6px);
-  display:none;place-items:center;padding:20px}
-.modal-bg.show{display:grid;animation:fade .3s}
-@keyframes fade{from{opacity:0}to{opacity:1}}
-.modal{
-  max-width:460px;width:100%;background:linear-gradient(180deg,var(--panel),var(--panel-2));
-  border:1px solid var(--gold);border-radius:20px;padding:26px;text-align:center;
-  box-shadow:0 30px 80px rgba(0,0,0,.6);animation:pop .35s cubic-bezier(.2,1.4,.4,1);
-}
-@keyframes pop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
-.modal .seal{width:64px;height:64px;margin:0 auto 12px;border-radius:50%;
-  background:conic-gradient(from 0deg,var(--gold),var(--teal-bright),var(--gold));
-  display:grid;place-items:center;font-size:30px;box-shadow:0 6px 20px rgba(0,0,0,.4)}
-.modal h2{font-size:22px;font-weight:900;margin-bottom:6px;color:var(--gold-soft)}
-.modal p{font-size:14px;color:var(--cream-dim);line-height:1.7;margin-bottom:16px}
-.secret-boxes{display:flex;gap:6px;justify-content:center;direction:rtl;margin-bottom:14px;flex-wrap:wrap}
-.secret-boxes input{width:42px;height:48px;text-align:center;font-size:22px;font-weight:800;
-  border-radius:10px;border:2px solid var(--line);background:var(--cream);color:var(--ink);
-  font-family:'Vazirmatn',sans-serif}
-.secret-boxes input:focus{outline:none;border-color:var(--gold)}
-.modal .hintline{font-size:13px;color:var(--gold-soft);background:rgba(233,185,73,.1);
-  border:1px dashed var(--line);border-radius:10px;padding:9px;margin-bottom:14px}
-
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);
-  background:var(--panel);color:var(--cream);padding:13px 22px;border-radius:12px;font-weight:700;
-  border:1px solid var(--line);box-shadow:0 10px 30px rgba(0,0,0,.5);z-index:60;transition:.35s;font-size:14px}
-.toast.show{transform:translateX(-50%) translateY(0)}
-.toast.good{border-color:var(--good)}
-.toast.bad{border-color:var(--rose)}
-
-.loading{text-align:center;padding:40px;color:var(--cream-dim)}
-.spinner{width:40px;height:40px;border:3px solid var(--line);border-top-color:var(--gold);
-  border-radius:50%;margin:0 auto 14px;animation:spin 1s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-.progress-bar{height:8px;background:rgba(8,23,26,.5);border-radius:9px;overflow:hidden;margin-top:4px}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--gold));width:0;transition:.5s}
-
-footer{text-align:center;margin-top:30px;color:var(--cream-dim);font-size:12px;line-height:2}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <header>
-    <div class="brand">
-      <div class="logo">ج</div>
-      <div>
-        <h1>جدولِ واژگان</h1>
-        <p>بازی جدول کلمات متقاطع فارسی</p>
-      </div>
-    </div>
-    <div class="stats">
-      <div class="chip">مرحله <b id="stat-level">۱</b></div>
-      <div class="chip">امتیاز <b id="stat-score">۰</b></div>
-    </div>
-  </header>
-
-  <div class="levels" id="levels"></div>
-
-  <div class="game">
-    <div class="board-card">
-      <div class="board-title">
-        <span class="name" id="board-name">در حال بارگذاری…</span>
-        <span class="chip" id="board-count">۰ کلمه</span>
-      </div>
-      <div class="board-scroll">
-        <div id="grid" class="loading"><div class="spinner"></div>آماده‌سازی جدول…</div>
-      </div>
-      <div style="width:100%">
-        <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+    <div class="rfq-box">
+      <textarea id="rfqText" rows="2" data-i18n-placeholder="home.hero_placeholder" placeholder="مثلاً: برای ۱۰۰۰ متر زیربنا میلگرد ۱۴ و ۱۶ و تیرآهن نیاز دارم، تحویل در تهران"></textarea>
+      <div class="rfq-box-actions">
+        <span class="rfq-hint">⌘ / Ctrl + Enter</span>
+        <button class="btn btn-primary" id="analyzeBtn">
+          <i data-lucide="sparkles" style="width:18px;height:18px"></i>
+          <span data-i18n="home.hero_analyze_btn">تحلیل هوشمند درخواست</span>
+        </button>
       </div>
     </div>
 
-    <div class="clue-card">
-      <div class="tabs">
-        <div class="tab active" data-dir="across" id="tab-across">افقی</div>
-        <div class="tab" data-dir="down" id="tab-down">عمودی</div>
+    <div class="bom-result hidden" id="bomResult">
+      <h3 data-i18n="home.result_title">فهرست صورت‌مجلس پیشنهادی (BOM)</h3>
+      <p class="result-hint" data-i18n="home.result_hint">این یک برآورد اولیه است؛ می‌توانید آن را ویرایش و سپس برای تأمین‌کنندگان ارسال کنید.</p>
+      <div class="bom-meta">
+        <div class="bom-meta-item"><span class="faint" data-i18n="home.result_city">شهر تحویل</span><b id="bomCity">—</b></div>
+        <div class="bom-meta-item"><span class="faint" data-i18n="home.result_area">متراژ زیربنا</span><b id="bomArea">—</b></div>
       </div>
-      <div class="clue-list" id="clues"></div>
+      <table class="bom-table">
+        <thead><tr>
+          <th data-i18n="common.material">کالا</th>
+          <th data-i18n="common.spec">مشخصات</th>
+          <th data-i18n="common.qty">مقدار</th>
+          <th data-i18n="common.unit">واحد</th>
+        </tr></thead>
+        <tbody id="bomBody"></tbody>
+      </table>
+      <button class="btn btn-accent btn-block" id="submitRfqBtn" style="margin-top:16px">
+        <i data-lucide="send" style="width:17px;height:17px"></i>
+        <span data-i18n="home.result_submit">ثبت و ارسال درخواست به تأمین‌کنندگان</span>
+      </button>
+    </div>
 
-      <div class="entry" id="entry" style="display:none">
-        <div class="entry-head">
-          <span class="q" id="entry-clue">—</span>
-          <span id="entry-meta"></span>
+    <div class="hero-ctas">
+      <a href="/dashboard" class="btn btn-primary" data-i18n="home.cta_rfq">ثبت درخواست خرید (RFQ)</a>
+      <a href="/supplier" class="btn btn-outline" data-i18n="home.cta_supplier">من تأمین‌کننده هستم</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2 data-i18n="home.price_widget_title">نوسانات قیمت لحظه‌ای بازار</h2>
+    </div>
+    <div class="price-card">
+      <div class="price-tabs">
+        <button class="price-tab active" data-material="rebar" data-i18n="home.price_tab_rebar">میلگرد</button>
+        <button class="price-tab" data-material="beam" data-i18n="home.price_tab_beam">تیرآهن</button>
+      </div>
+      <div class="price-head">
+        <div>
+          <span class="faint" data-i18n="home.price_today" style="font-size:12.5px">قیمت امروز</span>
+          <div class="price-now" id="priceNow">—</div>
         </div>
-        <div class="boxes" id="boxes"></div>
-        <div class="entry-actions">
-          <button class="btn btn-hint" id="btn-hint">💡 راهنما</button>
-          <button class="btn btn-go" id="btn-go">ثبت پاسخ</button>
-        </div>
+        <span id="priceChange" class="badge"></span>
+      </div>
+      <div class="price-chart-wrap"><canvas id="priceChart"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--surface-soft)">
+  <div class="container">
+    <div class="section-head">
+      <h2 data-i18n="home.how_title">از نیاز تا تأمین، در ۴ گام</h2>
+    </div>
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-num">۱</div>
+        <h3 data-i18n="home.how_step1_title">ایجاد پروژه</h3>
+        <p data-i18n="home.how_step1_desc">پروژه خود را در پنل تعریف کنید؛ مثلاً برج مسکونی یا کارخانه.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">۲</div>
+        <h3 data-i18n="home.how_step2_title">ثبت درخواست هوشمند</h3>
+        <p data-i18n="home.how_step2_desc">نیاز خود را به زبان ساده تایپ کنید تا هوش مصنوعی فهرست مصالح را بسازد.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">۳</div>
+        <h3 data-i18n="home.how_step3_title">مرکز پیشنهادات</h3>
+        <p data-i18n="home.how_step3_desc">قیمت و شرایط چند تأمین‌کننده معتبر را مقایسه و بهترین را انتخاب کنید.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">۴</div>
+        <h3 data-i18n="home.how_step4_title">تسویه و تکمیل</h3>
+        <p data-i18n="home.how_step4_desc">صدور پیش‌فاکتور و مدیریت پرداخت، یکپارچه در پلتفرم.</p>
       </div>
     </div>
   </div>
+</section>
 
-  <footer>
-    ساخته‌شده با ❤️ برای دوستداران زبان فارسی<br>
-    جدول کلمات متقاطع · ۱۰ مرحله از آسان تا افسانه‌ای · هر مرحله یک رمز پنهان
-  </footer>
-</div>
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2 data-i18n="home.categories_title">حوزه‌های فعالیت</h2>
+    </div>
+    <div class="cat-grid" id="categoriesGrid"></div>
+  </div>
+</section>
 
-<!-- مودال کشف رمز -->
-<div class="modal-bg" id="secret-modal">
-  <div class="modal">
-    <div class="seal">🗝️</div>
-    <h2>مرحلهٔ کشف رمز!</h2>
-    <p>آفرین! جدول را کامل کردی. حالا حروف نشان‌دار (نقطه قرمز) را کنار هم بچین و کلمهٔ رمز را کشف کن.</p>
-    <div class="hintline" id="secret-hint">—</div>
-    <div class="secret-boxes" id="secret-boxes"></div>
-    <div class="entry-actions">
-      <button class="btn btn-hint" id="secret-hint-btn">نمایش یک حرف</button>
-      <button class="btn btn-go" id="secret-go">کشف رمز</button>
+<section class="section" style="background:var(--surface-soft)">
+  <div class="container">
+    <div class="section-head">
+      <h2 data-i18n="home.why_title">چرا سازه‌مارکت؟</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="step-num"><i data-lucide="store" style="width:18px;height:18px"></i></div>
+        <h3 data-i18n="home.why_card1_title">بازار + استعلام هوشمند</h3>
+        <p data-i18n="home.why_card1_desc">ترکیب فروشگاه دیجیتال با موتور RFQ که در بازار ایران بی‌نظیر است.</p>
+      </div>
+      <div class="why-card">
+        <div class="step-num"><i data-lucide="brain-circuit" style="width:18px;height:18px"></i></div>
+        <h3 data-i18n="home.why_card2_title">تطبیق با هوش مصنوعی</h3>
+        <p data-i18n="home.why_card2_desc">امتیازدهی فروشندگان بر اساس فاصله، سابقه و نرخ پاسخگویی برای بهترین پیشنهاد.</p>
+      </div>
+      <div class="why-card">
+        <div class="step-num"><i data-lucide="trending-up" style="width:18px;height:18px"></i></div>
+        <h3 data-i18n="home.why_card3_title">شفافیت قیمت</h3>
+        <p data-i18n="home.why_card3_desc">پیش‌بینی و رهگیری روند قیمت میلگرد، ورق و تیرآهن با تحلیل بازار.</p>
+      </div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- مودال پیروزی مرحله -->
-<div class="modal-bg" id="win-modal">
-  <div class="modal">
-    <div class="seal">🏆</div>
-    <h2 id="win-title">رمز کشف شد!</h2>
-    <p id="win-text">به مرحلهٔ بعد خوش آمدی.</p>
-    <div class="entry-actions">
-      <button class="btn btn-go" id="win-next">مرحلهٔ بعد ←</button>
+<section class="section">
+  <div class="container">
+    <div class="stats-band">
+      <div class="stat-item"><h3>۴۰۰+ هزار میلیارد</h3><p data-i18n="home.stats_market">گردش مالی سالانه فولاد ایران (تومان)</p></div>
+      <div class="stat-item"><h3>&lt; ۵٪</h3><p data-i18n="home.stats_online">سهم معاملات آنلاین کنونی</p></div>
+      <div class="stat-item"><h3>۱,۰۰۰</h3><p data-i18n="home.stats_suppliers">تأمین‌کننده هدف سال اول</p></div>
+      <div class="stat-item"><h3>۵+</h3><p data-i18n="home.stats_cities">شهر تحت پوشش</p></div>
     </div>
   </div>
-</div>
+</section>
 
-<div class="toast" id="toast"></div>
+<section class="section">
+  <div class="container">
+    <div class="cta-banner">
+      <h2 data-i18n="home.cta_banner_title">همین حالا به بازار دیجیتال مصالح بپیوندید</h2>
+      <p data-i18n="home.cta_banner_desc">ثبت درخواست رایگان است و در کمتر از ۲ دقیقه اولین پیشنهادها را دریافت می‌کنید.</p>
+      <div class="hero-ctas">
+        <a href="/dashboard" class="btn" style="background:#fff;color:var(--primary-dark)" data-i18n="home.cta_rfq">ثبت درخواست خرید (RFQ)</a>
+        <a href="/supplier" class="btn btn-outline" data-i18n="home.cta_supplier">من تأمین‌کننده هستم</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-<script src="/static/app.js"></script>
-</body>
-</html>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/home.js') }}"></script>
+<script>
+  async function renderCategories(){
+    const cats = await fetchJSON('/api/categories');
+    document.getElementById('categoriesGrid').innerHTML = cats.map(c=>`
+      <div class="cat-card">
+        <div class="cat-icon"><i data-lucide="${c.icon}"></i></div>
+        <span>${window.I18N.pick(c.name)}</span>
+      </div>`).join('');
+    if (window.lucide) lucide.createIcons();
+  }
+  document.addEventListener('DOMContentLoaded', renderCategories);
+  document.addEventListener('i18n:changed', renderCategories);
+</script>
+{% endblock %}

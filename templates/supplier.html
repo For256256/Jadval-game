@@ -1,0 +1,76 @@
+{% extends "base_app.html" %}
+
+{% block sidebar_nav %}
+<a class="side-link active" href="#top"><i data-lucide="layout-dashboard"></i><span data-i18n="supplier.sidebar_overview">داشبورد فروش</span></a>
+<a class="side-link" href="#feedPanel"><i data-lucide="rss"></i><span data-i18n="supplier.sidebar_feed">فید استعلام‌ها</span></a>
+<a class="side-link" href="#inventoryPanel"><i data-lucide="box"></i><span data-i18n="supplier.sidebar_inventory">موجودی کالا</span></a>
+<a class="side-link" href="#reportPanel"><i data-lucide="bar-chart-3"></i><span data-i18n="supplier.sidebar_report">گزارش فروش</span></a>
+<a class="side-link" href="#profilePanel"><i data-lucide="building-2"></i><span data-i18n="supplier.sidebar_profile">پروفایل شرکت</span></a>
+{% endblock %}
+
+{% block content %}
+<a id="top"></a>
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="stat-icon" style="background:var(--primary-soft);color:var(--primary-dark)"><i data-lucide="rss" style="width:18px;height:18px"></i></div>
+    <h3 id="statOpen">0</h3>
+    <p data-i18n="supplier.stat_open">استعلام‌های باز</p>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon" style="background:var(--success-soft);color:var(--success)"><i data-lucide="zap" style="width:18px;height:18px"></i></div>
+    <h3>92%</h3>
+    <p data-i18n="supplier.stat_response_rate">نرخ پاسخگویی</p>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon" style="background:var(--accent-soft);color:#9a6510"><i data-lucide="star" style="width:18px;height:18px"></i></div>
+    <h3>4.8</h3>
+    <p data-i18n="supplier.stat_rating">امتیاز فروشنده</p>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon" style="background:var(--danger-soft);color:var(--danger)"><i data-lucide="trending-up" style="width:18px;height:18px"></i></div>
+    <h3 id="statSales">0</h3>
+    <p data-i18n="supplier.stat_sales">فروش این ماه (م. تومان)</p>
+  </div>
+</div>
+
+<div class="panel" id="feedPanel">
+  <div class="panel-head">
+    <h2 data-i18n="supplier.feed_title">استعلام‌های مرتبط با من</h2>
+    <div class="flex gap-8">
+      <select id="cityFilter" class="btn-sm" style="border:1px solid var(--border);border-radius:8px;padding:7px 10px"></select>
+      <select id="categoryFilter" class="btn-sm" style="border:1px solid var(--border);border-radius:8px;padding:7px 10px"></select>
+    </div>
+  </div>
+  <div id="feedList"></div>
+</div>
+
+<div class="panel" id="reportPanel">
+  <div class="panel-head"><h2 data-i18n="supplier.report_title">گزارش فروش ماهانه</h2></div>
+  <div class="price-chart-wrap" style="height:180px"><canvas id="salesChart"></canvas></div>
+</div>
+
+<div class="panel" id="inventoryPanel">
+  <div class="panel-head"><h2 data-i18n="supplier.inventory_title">موجودی و قیمت پایه کالاها</h2></div>
+  <table class="data-table">
+    <thead><tr>
+      <th data-i18n="supplier.th_material">کالا</th>
+      <th data-i18n="supplier.th_spec">مشخصات</th>
+      <th data-i18n="supplier.th_stock">موجودی</th>
+      <th data-i18n="supplier.th_base_price">قیمت پایه</th>
+    </tr></thead>
+    <tbody id="inventoryBody"></tbody>
+  </table>
+</div>
+
+<div class="panel" id="profilePanel">
+  <div class="panel-head"><h2 data-i18n="supplier.sidebar_profile">پروفایل شرکت</h2></div>
+  <div class="field-row">
+    <div class="field"><label>نام شرکت</label><input type="text" value="فولاد گسترش پارس" disabled /></div>
+    <div class="field"><label>شهر</label><input type="text" value="تهران" disabled /></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/supplier.js') }}"></script>
+{% endblock %}

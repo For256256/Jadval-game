@@ -1,0 +1,77 @@
+{% extends "base_app.html" %}
+
+{% block sidebar_nav %}
+<a class="side-link active" href="#top"><i data-lucide="layout-dashboard"></i><span data-i18n="admin.sidebar_overview">نمای کلی</span></a>
+<a class="side-link" href="#usersPanel"><i data-lucide="users"></i><span data-i18n="admin.sidebar_users">کاربران</span></a>
+<a class="side-link" href="#usersPanel"><i data-lucide="truck"></i><span data-i18n="admin.sidebar_suppliers">تأمین‌کنندگان</span></a>
+<a class="side-link" href="#categoriesPanel"><i data-lucide="layers"></i><span data-i18n="admin.sidebar_categories">دسته‌بندی‌ها</span></a>
+<a class="side-link" href="#commissionPanel"><i data-lucide="percent"></i><span data-i18n="admin.sidebar_commission">کمیسیون</span></a>
+<a class="side-link" href="#financePanel"><i data-lucide="line-chart"></i><span data-i18n="admin.sidebar_finance">گزارش‌های مالی</span></a>
+{% endblock %}
+
+{% block content %}
+<a id="top"></a>
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="stat-icon" style="background:var(--primary-soft);color:var(--primary-dark)"><i data-lucide="users" style="width:18px;height:18px"></i></div>
+    <h3 id="statUsers">0</h3>
+    <p data-i18n="admin.stat_users">کل کاربران</p>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon" style="background:var(--accent-soft);color:#9a6510"><i data-lucide="truck" style="width:18px;height:18px"></i></div>
+    <h3 id="statSuppliers">0</h3>
+    <p data-i18n="admin.stat_suppliers">کل تأمین‌کنندگان</p>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon" style="background:var(--success-soft);color:var(--success)"><i data-lucide="banknote" style="width:18px;height:18px"></i></div>
+    <h3 id="statVolume">0</h3>
+    <p data-i18n="admin.stat_volume">ارزش معاملات این ماه (میلیارد تومان)</p>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon" style="background:var(--danger-soft);color:var(--danger)"><i data-lucide="percent" style="width:18px;height:18px"></i></div>
+    <h3 id="statCommission">0</h3>
+    <p data-i18n="admin.stat_commission">کمیسیون دریافتی (میلیون تومان)</p>
+  </div>
+</div>
+
+<div class="panel" id="financePanel">
+  <div class="panel-head"><h2 data-i18n="admin.revenue_chart_title">روند درآمد ۱۲ ماه گذشته</h2></div>
+  <div class="price-chart-wrap" style="height:200px"><canvas id="revenueChart"></canvas></div>
+</div>
+
+<div class="panel" id="usersPanel">
+  <div class="panel-head"><h2 data-i18n="admin.users_title">مدیریت کاربران و تأمین‌کنندگان</h2></div>
+  <table class="data-table">
+    <thead><tr>
+      <th data-i18n="admin.th_name">نام</th>
+      <th data-i18n="admin.th_role">نقش</th>
+      <th data-i18n="admin.th_city">شهر</th>
+      <th data-i18n="admin.th_status">وضعیت</th>
+      <th data-i18n="admin.th_actions">عملیات</th>
+    </tr></thead>
+    <tbody id="usersBody"></tbody>
+  </table>
+</div>
+
+<div class="panel" id="categoriesPanel">
+  <div class="panel-head"><h2 data-i18n="admin.sidebar_categories">دسته‌بندی‌ها</h2></div>
+  <div class="cat-grid" id="categoriesGrid"></div>
+</div>
+
+<div class="panel" id="commissionPanel">
+  <div class="panel-head"><h2 data-i18n="admin.commission_title">نرخ کمیسیون معاملات</h2></div>
+  <div class="field-row">
+    <div class="field"><label data-i18n="admin.commission_tier1">اشتراک پایه (ماهانه)</label><input type="number" id="tier1Input" /></div>
+    <div class="field"><label data-i18n="admin.commission_tier2">اشتراک طلایی (ماهانه)</label><input type="number" id="tier2Input" /></div>
+  </div>
+  <div class="field" style="max-width:240px">
+    <label data-i18n="admin.commission_fee">کارمزد هر معامله (٪)</label>
+    <input type="number" step="0.1" id="feeInput" />
+  </div>
+  <button class="btn btn-primary btn-sm" id="saveCommissionBtn" data-i18n="admin.save_settings">ذخیره تنظیمات</button>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}
