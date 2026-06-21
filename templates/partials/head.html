@@ -1,5 +1,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<script>
+  (function () {
+    try {
+      var mode = localStorage.getItem("sazeh_theme") || "auto";
+      var isDark = mode === "dark" || (mode === "auto" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
+    } catch (e) {}
+  })();
+</script>
 <title>{% block title %}سازه‌مارکت | بازار دیجیتال مصالح و تجهیزات ساختمان{% endblock %}</title>
 <meta name="description" content="سازه‌مارکت، پلتفرم B2B/B2C استعلام و تأمین مصالح و تجهیزات صنعت ساختمان با هوش مصنوعی." />
 <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}" />

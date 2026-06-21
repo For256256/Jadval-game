@@ -33,6 +33,7 @@
         <h1 data-i18n="{{ page_title_key }}">{{ page_title_fallback }}</h1>
       </div>
       <div class="navbar-actions">
+        {% include "partials/theme_toggle.html" %}
         {% include "partials/lang_menu.html" %}
       </div>
     </div>
@@ -46,6 +47,7 @@
 {% include "partials/toast_stack.html" %}
 
 <script src="{{ url_for('static', filename='js/i18n.js') }}"></script>
+<script src="{{ url_for('static', filename='js/theme.js') }}"></script>
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 <script src="{{ url_for('static', filename='js/motion.js') }}"></script>
 {% block scripts %}{% endblock %}

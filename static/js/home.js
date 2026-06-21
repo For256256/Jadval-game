@@ -8,6 +8,10 @@
     const ctx = document.getElementById("priceChart").getContext("2d");
 
     document.getElementById("priceNow").textContent = `${fmtNum(data.today)} ${window.I18N.pick(data.unit)}`;
+    if (material === "rebar") {
+      const hvChipPrice = document.getElementById("hvChipPrice");
+      if (hvChipPrice) hvChipPrice.textContent = `${fmtNum(data.today)} ${window.I18N.pick(data.unit)}`;
+    }
     const changeEl = document.getElementById("priceChange");
     const up = data.change_pct >= 0;
     changeEl.textContent = `${up ? "▲" : "▼"} ${Math.abs(data.change_pct)}%`;
