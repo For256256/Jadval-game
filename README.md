@@ -12,13 +12,34 @@
 
 ## متغیر محیطی مورد نیاز
 
-برای کار کردن تحلیل هوشمند RFQ باید کلید API آنتروپیک (Claude) را تنظیم کنید:
+برای کار کردن تحلیل هوشمند RFQ، مدل Claude را باید از یکی از این دو مسیر تأمین کنید:
+
+### مسیر ۱: API مستقیم آنتروپیک
 
 ```bash
 export ANTHROPIC_API_KEY="sk-ant-..."
 ```
 
-بدون این متغیر، باقی پلتفرم به‌طور عادی کار می‌کند اما درخواست تحلیل هوشمند با خطا مواجه می‌شود.
+کلید را از [console.anthropic.com](https://console.anthropic.com) (پس از ثبت‌نام و شارژ حساب) بگیرید.
+
+### مسیر ۲: Google Cloud Vertex AI (مناسب استفاده از اعتبار رایگان آزمایشی Google Cloud)
+
+اگر حساب Google Cloud با اعتبار رایگان آزمایشی (Free Trial) دارید، می‌توانید بدون پرداخت مستقیم به آنتروپیک از همان اعتبار استفاده کنید:
+
+1. در [console.cloud.google.com](https://console.cloud.google.com) یک پروژه بسازید (یا از پروژهٔ موجود استفاده کنید) و **Vertex AI API** را برای آن فعال کنید.
+2. در بخش IAM یک **Service Account** بسازید، نقش `Vertex AI User` را به آن بدهید و یک کلید JSON برایش صادر/دانلود کنید.
+3. فایل JSON دانلودشده را روی سرور خود ذخیره کنید (برای نصب با `install.sh`، آن را در `/var/lib/sazehmarket/gcp-key.json` قرار دهید تا در بازنصب‌ها هم باقی بماند).
+4. متغیرهای محیطی زیر را تنظیم کنید:
+
+```bash
+export GOOGLE_CLOUD_PROJECT="your-project-id"
+export GOOGLE_APPLICATION_CREDENTIALS="/var/lib/sazehmarket/gcp-key.json"
+export VERTEX_REGION="global"   # اختیاری؛ پیش‌فرض همین مقدار است
+```
+
+اگر `ANTHROPIC_API_KEY` تنظیم شده باشد، اولویت با همان است؛ در غیر این صورت در صورت وجود `GOOGLE_CLOUD_PROJECT`، برنامه به‌صورت خودکار از Vertex AI استفاده می‌کند.
+
+بدون هیچ‌یک از این دو، باقی پلتفرم به‌طور عادی کار می‌کند اما درخواست تحلیل هوشمند با خطا مواجه می‌شود.
 
 ## اجرای محلی (برای توسعه)
 
@@ -50,10 +71,19 @@ curl -fsSL https://raw.githubusercontent.com/For256256/Jadval-game/main/install.
 curl -fsSL https://raw.githubusercontent.com/For256256/Jadval-game/main/install.sh | sudo BRANCH=my-branch bash
 ```
 
-برای فعال‌سازی تحلیل هوشمند RFQ، کلید Claude API خود را هنگام نصب بدهید؛ اسکریپت آن را در سرویس systemd ذخیره می‌کند:
+برای فعال‌سازی تحلیل هوشمند RFQ، یکی از دو مسیر زیر را هنگام نصب بدهید؛ اسکریپت متغیرها را در سرویس systemd ذخیره می‌کند:
+
+**مسیر ۱ — API مستقیم آنتروپیک:**
 ```bash
 curl -fsSL https://raw.githubusercontent.com/For256256/Jadval-game/main/install.sh | sudo ANTHROPIC_API_KEY=sk-ant-... bash
 ```
+
+**مسیر ۲ — Google Cloud Vertex AI (اعتبار رایگان آزمایشی):**
+ابتدا فایل کلید JSON حساب سرویس گوگل را در `/var/lib/sazehmarket/gcp-key.json` قرار دهید (پوشهٔ `/var/lib/sazehmarket` پایدار است و در بازنصب‌ها از بین نمی‌رود)، سپس:
+```bash
+sudo GOOGLE_CLOUD_PROJECT=your-project-id GOOGLE_APPLICATION_CREDENTIALS=/var/lib/sazehmarket/gcp-key.json bash install.sh
+```
+(برای این مسیر باید اسکریپت را از کنار فایل‌های پروژه یا پس از کلون دستی اجرا کنید، نه با `curl | bash`، چون باید پیش از اجرا فایل کلید را روی سرور قرار داده باشید.)
 
 پس از نصب، پلتفرم در دسترس است:
 

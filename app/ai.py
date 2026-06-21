@@ -4,10 +4,15 @@
 این ماژول متن آزاد خریدار (فارسی/عربی/انگلیسی) را به یک فهرست ساختاریافتهٔ
 مصالح (BOM) تبدیل می‌کند؛ تخمین مقادیر بر اساس دانش مهندسی برآورد ساخت‌وساز
 توسط خود مدل انجام می‌شود، نه فرمول‌های ثابت محلی.
+
+سرویس Claude را می‌توان از دو مسیر تأمین کرد:
+۱. API مستقیم آنتروپیک با ANTHROPIC_API_KEY.
+۲. Google Cloud Vertex AI با GOOGLE_CLOUD_PROJECT (+ احراز هویت ADC استاندارد گوگل)،
+   که برای استفاده از اعتبار رایگان آزمایشی Google Cloud مناسب است.
 """
 import os
 
-from anthropic import Anthropic
+from anthropic import Anthropic, AnthropicVertex
 
 from app import data
 
@@ -18,12 +23,23 @@ _client = None
 
 def _get_client():
     global _client
-    if _client is None:
-        api_key = os.environ.get("ANTHROPIC_API_KEY")
-        if not api_key:
-            raise RuntimeError("ANTHROPIC_API_KEY تنظیم نشده است")
+    if _client is not None:
+        return _client
+
+    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    if api_key:
         _client = Anthropic(api_key=api_key)
-    return _client
+        return _client
+
+    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
+    if project_id:
+        region = os.environ.get("VERTEX_REGION", "global")
+        _client = AnthropicVertex(project_id=project_id, region=region)
+        return _client
+
+    raise RuntimeError(
+        "هیچ سرویس Claude پیکربندی نشده است؛ ANTHROPIC_API_KEY یا GOOGLE_CLOUD_PROJECT را تنظیم کنید"
+    )
 
 
 MATERIAL_IDS = list(data.MATERIALS.keys())
