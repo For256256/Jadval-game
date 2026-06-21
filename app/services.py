@@ -12,25 +12,6 @@ from app import data
 from app.extensions import db
 from app.models import CommissionSettings, InventoryItem, Project, Quote, RFQ, Sale, User
 
-UNIT_PRICE_TOMAN = {
-    "rebar": 28_500_000,
-    "beam": 31_000_000,
-    "cement": 410_000,
-    "sheet": 33_000_000,
-    "profile": 29_500_000,
-    "gypsum": 165_000,
-}
-DEFAULT_UNIT_PRICE = 20_000_000
-
-
-def estimate_bom_price(bom):
-    total = 0.0
-    for item in bom or []:
-        price = UNIT_PRICE_TOMAN.get(item.get("material_id"), DEFAULT_UNIT_PRICE)
-        total += price * float(item.get("qty") or 0)
-    return max(int(total), 5_000_000)
-
-
 # ---------------------------------------------------------------------------
 # پنل خریدار — پروژه‌ها و استعلام‌ها
 # ---------------------------------------------------------------------------
@@ -54,12 +35,6 @@ def create_project_from_rfq(buyer, parsed, raw_text):
         deadline_ts=time.time() + random.randint(3600, 3 * 24 * 3600),
     )
     db.session.add(rfq)
-    db.session.flush()
-
-    base_price = estimate_bom_price(bom)
-    for quote_data in data.make_demo_quotes(random.randint(3, 5), base_price):
-        db.session.add(Quote(rfq_id=rfq.id, **quote_data))
-
     db.session.commit()
     return project.to_dict()
 

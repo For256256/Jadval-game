@@ -18,6 +18,7 @@ SERVICE="/etc/systemd/system/${APP_NAME}.service"
 PY="python3"
 REPO_URL="${REPO_URL:-https://github.com/For256256/Jadval-game.git}"
 BRANCH="${BRANCH:-main}"
+ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY:-}"
 
 GREEN='\033[0;32m'; YEL='\033[1;33m'; RED='\033[0;31m'; NC='\033[0m'
 say(){ echo -e "${GREEN}▶ $*${NC}"; }
@@ -66,6 +67,11 @@ ADMIN_PASSWORD="$(python - <<'PYEOF'
 import secrets;print(secrets.token_urlsafe(12))
 PYEOF
 )"
+if [[ -z "${ANTHROPIC_API_KEY}" ]]; then
+  warn "ANTHROPIC_API_KEY تنظیم نشده؛ قابلیت «تحلیل هوشمند درخواست» کار نخواهد کرد."
+  warn "برای فعال‌سازی، نصب را این‌گونه اجرا کنید: sudo ANTHROPIC_API_KEY=sk-ant-... bash install.sh"
+fi
+
 cat > "${SERVICE}" <<EOF
 [Unit]
 Description=SazehMarket - B2B/B2C Construction Materials Marketplace
@@ -78,6 +84,7 @@ Environment=PORT=${PORT}
 Environment=SECRET_KEY=${SECRET_KEY}
 Environment=DATABASE_URL=sqlite:///${DATA_DIR}/sazehmarket.db
 Environment=ADMIN_PASSWORD=${ADMIN_PASSWORD}
+Environment=ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
 ExecStart=${APP_DIR}/venv/bin/gunicorn --workers 3 --bind ${HOST}:${PORT} app.server:app
 Restart=always
 RestartSec=3

@@ -7,7 +7,7 @@ import secrets as pysecrets
 
 from flask import Flask, g, jsonify, redirect, render_template, request, session, url_for
 
-from app import data, seed, services
+from app import ai, data, seed, services
 from app.auth import get_current_user, role_required_api, role_required_page
 from app.extensions import db
 from app.models import User
@@ -203,7 +203,10 @@ def api_rfq_parse():
     text = (body.get("text") or "").strip()
     if not text:
         return jsonify({"error": "متن درخواست خالی است"}), 400
-    parsed = data.parse_rfq_text(text)
+    try:
+        parsed = ai.parse_rfq_text(text)
+    except Exception:
+        return jsonify({"error": "سرویس تحلیل هوشمند موقتاً در دسترس نیست؛ لطفاً دوباره تلاش کنید"}), 502
     return jsonify(parsed)
 
 
@@ -215,7 +218,13 @@ def api_rfq_create():
     bom = body.get("bom")
     if not text and not bom:
         return jsonify({"error": "اطلاعات درخواست ناقص است"}), 400
-    parsed = {"bom": bom, "city": body.get("city")} if bom else data.parse_rfq_text(text)
+    if bom:
+        parsed = {"bom": bom, "city": body.get("city")}
+    else:
+        try:
+            parsed = ai.parse_rfq_text(text)
+        except Exception:
+            return jsonify({"error": "سرویس تحلیل هوشمند موقتاً در دسترس نیست؛ لطفاً دوباره تلاش کنید"}), 502
     project = services.create_project_from_rfq(get_current_user(), parsed, text)
     return jsonify(project), 201
 
