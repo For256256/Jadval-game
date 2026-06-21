@@ -105,7 +105,31 @@
     "footer_links": "Quick links",
     "footer_categories": "Industries",
     "footer_lang": "Language",
-    "footer_rights": "All rights reserved."
+    "footer_rights": "All rights reserved.",
+    "hero_visual_price": "Live rebar price",
+    "hero_visual_suppliers": "Active suppliers",
+    "hero_visual_verified": "Quality verified",
+    "hero_visual_quality": "Materials inspection"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "auto": "Auto (system)"
+  },
+  "ads": {
+    "badge": "Sponsored",
+    "slide1_title": "Go Professional, get seen more",
+    "slide1_desc": "Upgrade your plan to rank at the top of the supplier list.",
+    "slide1_cta": "View plans",
+    "slide2_title": "Type your request — AI handles the rest",
+    "slide2_desc": "Build your project's material list in seconds and send it to suppliers.",
+    "slide2_cta": "Start smart analysis",
+    "slide3_title": "Fresh RFQs, right now",
+    "slide3_desc": "Join the live feed of buyer requests in your city.",
+    "slide3_cta": "Open supplier panel",
+    "slide4_title": "Free membership for the first 1,000 suppliers",
+    "slide4_desc": "Join early and get exclusive launch-period perks.",
+    "slide4_cta": "Sign up free"
   },
   "dashboard": {
     "title": "Buyer Dashboard",

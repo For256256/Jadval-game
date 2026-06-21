@@ -12,3 +12,14 @@ services:
         generateValue: true
       - key: ANTHROPIC_API_KEY
         sync: false
+      # مسیر جایگزین: Google Cloud Vertex AI (مناسب اعتبار رایگان آزمایشی Google Cloud).
+      # اگر از این مسیر استفاده می‌کنید، ANTHROPIC_API_KEY را خالی بگذارید و:
+      # ۱. در داشبورد Render یک Secret File با محتوای کلید JSON حساب سرویس گوگل بسازید
+      #    (Render آن را در مسیر /etc/secrets/<نام‌فایل> mount می‌کند).
+      # ۲. مقدار GOOGLE_APPLICATION_CREDENTIALS را برابر همان مسیر mount‌شده قرار دهید.
+      - key: GOOGLE_CLOUD_PROJECT
+        sync: false
+      - key: GOOGLE_APPLICATION_CREDENTIALS
+        sync: false
+      - key: VERTEX_REGION
+        value: global

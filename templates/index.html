@@ -4,7 +4,8 @@
 <section class="hero">
   <span class="hero-blob hero-blob-1"></span>
   <span class="hero-blob hero-blob-2"></span>
-  <div class="container hero-inner">
+  <div class="container hero-flex">
+    <div class="hero-inner">
     <span class="eyebrow"><span class="live-dot"></span> <span data-i18n="home.hero_eyebrow">بازار دیجیتال مصالح و تجهیزات صنعت ساختمان</span></span>
     <h1 data-i18n="home.hero_title">نیاز پروژه‌ات را تایپ کن؛ هوش مصنوعی بقیه را می‌سپارد</h1>
     <p class="lead" data-i18n="home.hero_subtitle">سازه‌مارکت خریداران، پیمانکاران و تأمین‌کنندگان مصالح ساختمانی و صنعتی را در یک بازار دیجیتال یکپارچه با موتور استعلام هوشمند (RFQ) به هم متصل می‌کند.</p>
@@ -45,6 +46,38 @@
     <div class="hero-ctas">
       <a href="/dashboard" class="btn btn-primary" data-i18n="home.cta_rfq">ثبت درخواست خرید (RFQ)</a>
       <a href="/supplier" class="btn btn-outline" data-i18n="home.cta_supplier">من تأمین‌کننده هستم</a>
+    </div>
+    </div>
+
+    <div class="hero-visual" data-reveal>
+      <div class="hero-visual-card">
+        <span class="hv-grid-bg"></span>
+        <div class="hv-center-icon"><i data-lucide="building-2"></i></div>
+        <div class="hv-chip hv-chip-1">
+          <i data-lucide="bar-chart-3"></i>
+          <div><b id="hvChipPrice">—</b><span data-i18n="home.hero_visual_price">قیمت لحظه‌ای میلگرد</span></div>
+        </div>
+        <div class="hv-chip hv-chip-2">
+          <i data-lucide="truck"></i>
+          <div><b>+۱۲۰۰</b><span data-i18n="home.hero_visual_suppliers">تأمین‌کننده فعال</span></div>
+        </div>
+        <div class="hv-chip hv-chip-3">
+          <i data-lucide="shield-check"></i>
+          <div><b data-i18n="home.hero_visual_verified">تأیید کیفیت</b><span data-i18n="home.hero_visual_quality">بازرسی مصالح ساختمانی</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section ad-section">
+  <div class="container">
+    <div class="ad-carousel" id="adCarousel" data-reveal>
+      <span class="ad-badge"><i data-lucide="megaphone"></i> <span data-i18n="ads.badge">تبلیغات ویژه</span></span>
+      <div class="ad-track" id="adTrack"></div>
+      <button class="ad-nav ad-prev" id="adPrev" type="button" aria-label="prev"><i data-lucide="chevron-right"></i></button>
+      <button class="ad-nav ad-next" id="adNext" type="button" aria-label="next"><i data-lucide="chevron-left"></i></button>
+      <div class="ad-dots" id="adDots"></div>
     </div>
   </div>
 </section>
@@ -174,6 +207,7 @@
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/home.js') }}"></script>
+<script src="{{ url_for('static', filename='js/ads.js') }}"></script>
 <script>
   async function renderCategories(){
     const cats = await fetchJSON('/api/categories');
